@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/re-calculator2/static/css/main.5f361e03.chunk.css",
+    "main.js": "/re-calculator2/static/js/main.89df7902.chunk.js",
+    "main.js.map": "/re-calculator2/static/js/main.89df7902.chunk.js.map",
+    "runtime-main.js": "/re-calculator2/static/js/runtime-main.17d79399.js",
+    "runtime-main.js.map": "/re-calculator2/static/js/runtime-main.17d79399.js.map",
+    "static/js/2.9f58557b.chunk.js": "/re-calculator2/static/js/2.9f58557b.chunk.js",
+    "static/js/2.9f58557b.chunk.js.map": "/re-calculator2/static/js/2.9f58557b.chunk.js.map",
+    "index.html": "/re-calculator2/index.html",
+    "precache-manifest.0376d42b239c4ff85392cb79795a03aa.js": "/re-calculator2/precache-manifest.0376d42b239c4ff85392cb79795a03aa.js",
+    "service-worker.js": "/re-calculator2/service-worker.js",
+    "static/css/main.5f361e03.chunk.css.map": "/re-calculator2/static/css/main.5f361e03.chunk.css.map",
+    "static/js/2.9f58557b.chunk.js.LICENSE.txt": "/re-calculator2/static/js/2.9f58557b.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/re-calculator2/static/media/logo.5d5d9eef.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.17d79399.js",
+    "static/js/2.9f58557b.chunk.js",
+    "static/css/main.5f361e03.chunk.css",
+    "static/js/main.89df7902.chunk.js"
+  ]
+}
