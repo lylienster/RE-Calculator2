@@ -1,8 +1,9 @@
 import React from "react";
+import { toCurrency } from "./helpers";
 
 interface Props {
   label: string;
-  inputName: string;
+  inputName?: string;
   inputValue: number;
   additionalInfoText?: string;
   disabled?: boolean;
@@ -11,7 +12,7 @@ interface Props {
   required?: boolean;
   roundValue?: boolean;
   isNumberInput?: boolean;
-  handleOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleOnChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const SingleInput = ({
@@ -34,7 +35,7 @@ const SingleInput = ({
 
   let value = roundValue ? Math.ceil(inputValue) : inputValue;
 
-  //   value = value && !isNaN(value) ? Number(value).toCurrency() : "";
+  const strValue = value ? toCurrency(Number(value)) : "";
 
   return (
     <div className="input-group row py-1 ">
@@ -47,7 +48,7 @@ const SingleInput = ({
           <input
             className={"form-control " + isInvalid}
             name={inputName}
-            value={value}
+            value={strValue}
             onChange={handleOnChange}
             disabled={disabled}
             type={isNumberInput ? "number" : ""}
