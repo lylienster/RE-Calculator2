@@ -1,11 +1,11 @@
 import React from "react";
 import SingleInput from "./SingleInput";
-import { Form } from "./App";
+import { FormData } from "./App";
 import { Button, Modal } from "react-bootstrap";
 
 interface Props {
-  defaults: Form;
-  handleOnSubmit: (defaults: Form) => void;
+  defaults: FormData;
+  handleOnSubmit: (defaults: FormData) => void;
 }
 
 const DefaultValues = ({ defaults, handleOnSubmit }: Props) => {

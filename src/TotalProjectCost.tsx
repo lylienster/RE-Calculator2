@@ -1,10 +1,10 @@
 import React from "react";
 import SingleInput from "./SingleInput";
-import { Form } from "./App";
+import { FormData } from "./App";
 import { calculateTotalProjectCost, toCurrency } from "./helpers";
 
 interface Props {
-  form: Form;
+  form: FormData;
   handleOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 

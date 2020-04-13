@@ -5,8 +5,14 @@ import TotalProjectCost from "./TotalProjectCost";
 import { useLocalStorage } from "./helpers";
 import PropertyInfo from "./PropertyInfo";
 import DefaultValues from "./DefaultValues";
+import TotalCostOutOfPocket from "./TotalCostOutOfPocket";
+import MonthlyMortgagePayment from "./MonthlyMortgagePayment";
+import TotalIncome from "./TotalIncome";
+import TotalExpenses from "./TotalExpenses";
+import Evaluation from "./Evaluation";
+import Projection from "./Projection";
 
-export interface Form {
+export interface FormData {
   address: string;
   purchasePrice: number;
   purchaseClosingCosts: number;
@@ -24,6 +30,15 @@ export interface Form {
   preRentHoldingCosts: number;
   estimatedRepairs: number;
   askingPrice: number;
+  rent: number;
+  floodInsuranceMonthlyCost: number;
+  electricityMonthlyCost: number;
+  waterMonthlyCost: number;
+  sewerMonthlyCost: number;
+  gasMonthlyCost: number;
+  garbageMonthlyCost: number;
+  hoaMonthlyCost: number;
+  afterRepairValue: number;
 }
 
 const App = () => {
@@ -70,13 +85,28 @@ const App = () => {
     setSavedForm(newForm);
   };
 
-  const handleDefaultsSubmission = (newDefaults: Form) => {
+  const handleDefaultsSubmission = (newDefaults: FormData) => {
     const newDefaultsString = newDefaults;
 
     setDefaults(newDefaultsString);
     const newForm = { ...form, ...newDefaults };
     setForm(newForm);
     setSavedForm(newForm);
+  };
+
+  const setFormValueByName = (name: string, value: number) => {
+    const newForm = {
+      ...form,
+      [name]: Number(value),
+    };
+    setForm(newForm);
+
+    setSavedForm(newForm);
+  };
+
+  const handleResetNumbersButtonClick = () => {
+    setSavedForm(initialDefaults);
+    setForm(initialDefaults);
   };
 
   return (
@@ -92,7 +122,7 @@ const App = () => {
         <div>
           <Button
             variant="primary"
-            onClick={() => {}}
+            onClick={handleResetNumbersButtonClick}
             className="float-right clear-fix"
             style={{ marginRight: "10px" }}
           >
@@ -107,6 +137,20 @@ const App = () => {
             handleTextOnChange={handleTextOnChange}
           />
           <TotalProjectCost form={form} handleOnChange={handleOnChange} />
+          <TotalCostOutOfPocket
+            form={form}
+            handleOnChange={handleOnChange}
+            setFormValueByName={setFormValueByName}
+          />
+          <MonthlyMortgagePayment form={form} handleOnChange={handleOnChange} />
+          <TotalIncome form={form} handleOnChange={handleOnChange} />
+          <TotalExpenses
+            form={form}
+            handleOnChange={handleOnChange}
+            setFormValueByName={setFormValueByName}
+          />
+          <Evaluation form={form} />
+          <Projection form={form} handleOnChange={handleOnChange} />
         </form>
       </div>
     </div>
