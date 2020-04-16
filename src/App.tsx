@@ -11,6 +11,7 @@ import TotalIncome from "./TotalIncome";
 import TotalExpenses from "./TotalExpenses";
 import Evaluation from "./Evaluation";
 import Projection from "./Projection";
+import LoanBalanceValueEquity from "./LoanBalanceValueEquity";
 
 export interface FormData {
   address: string;
@@ -151,6 +152,7 @@ const App = () => {
           />
           <Evaluation form={form} />
           <Projection form={form} handleOnChange={handleOnChange} />
+          <LoanBalanceValueEquity form={form} />
         </form>
       </div>
     </div>

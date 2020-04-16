@@ -151,10 +151,9 @@ export const calculateProjectionLoanPayoff = (form: FormData) => {
   const { projectionYear, loanPeriod, interestRate } = form;
   const loan = calculateLoan(form);
 
-  // plus 1 to count the last month
   var loanPayoff = getRemainingBalance(
     loan,
-    projectionYear * 12 + 1,
+    projectionYear * 12,
     loanPeriod * 12,
     interestRate / 100
   );
