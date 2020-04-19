@@ -6,7 +6,7 @@ import {
   toCurrency,
   calculateTotalExpenses,
 } from "./helpers";
-import { FormData } from "./App";
+import { FormData } from "./Calculator";
 import MonthYearInput from "./MonthYearInput";
 
 interface Props {

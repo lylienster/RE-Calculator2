@@ -1,6 +1,6 @@
 import React from "react";
 import SingleInput from "./SingleInput";
-import { FormData } from "./App";
+import { FormData } from "./Calculator";
 import { toCurrency } from "./helpers";
 
 interface Props {

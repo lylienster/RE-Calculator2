@@ -8,7 +8,7 @@ import {
   Area,
   Legend,
 } from "recharts";
-import { FormData } from "./App";
+import { FormData } from "./Calculator";
 import {
   calculateProjectionSalePrice,
   calculateProjectionLoanPayoff,

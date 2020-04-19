@@ -1,6 +1,6 @@
 import React from "react";
 import SingleInput from "./SingleInput";
-import { FormData } from "./App";
+import { FormData } from "./Calculator";
 import { Button, Modal } from "react-bootstrap";
 
 interface Props {
@@ -33,9 +33,9 @@ const DefaultValues = ({ defaults, handleOnSubmit }: Props) => {
   };
 
   const {
-    purchaseClosingCosts,
+    purchaseClosingCost,
     loanPeriod,
-    interestRate,
+    loanInterestRate,
     downPaymentPercentage,
     vacancyRate,
     repairsRate,
@@ -61,8 +61,8 @@ const DefaultValues = ({ defaults, handleOnSubmit }: Props) => {
             <div>
               <SingleInput
                 label="Purchase Closing Costs"
-                inputName="purchaseClosingCosts"
-                inputValue={purchaseClosingCosts}
+                inputName="purchaseClosingCost"
+                inputValue={purchaseClosingCost}
                 handleOnChange={handleOnChange}
                 prefix={"$"}
               />
@@ -77,8 +77,8 @@ const DefaultValues = ({ defaults, handleOnSubmit }: Props) => {
               />
               <SingleInput
                 label="Interest Rate"
-                inputName="interestRate"
-                inputValue={interestRate}
+                inputName="loanInterestRate"
+                inputValue={loanInterestRate}
                 handleOnChange={handleOnChange}
                 suffix={"%"}
                 roundValue={false}

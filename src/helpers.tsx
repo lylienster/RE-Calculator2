@@ -1,5 +1,6 @@
-import { FormData } from "./App";
+import { FormData } from "./Calculator";
 import { useState } from "react";
+import { Data } from "./pages/BrrrrCalculator";
 
 export const toCurrency = (number: number): string => {
   const formattedValue = number.toLocaleString(undefined, {
@@ -10,29 +11,29 @@ export const toCurrency = (number: number): string => {
 };
 
 export const calculateTotalProjectCost = ({
-  purchasePrice,
-  estimatedRepairs,
-  purchaseClosingCosts,
-  preRentHoldingCosts,
-}: FormData): number => {
+  purchasePrice = 0,
+  estimateRepairCost = 0,
+  purchaseClosingCost = 0,
+  preRentHoldingCost = 0,
+}: FormData | Data): number => {
   const totalProjectCost =
     (purchasePrice || 0) +
-    (estimatedRepairs || 0) +
-    (purchaseClosingCosts || 0) +
-    (preRentHoldingCosts || 0);
+    (estimateRepairCost || 0) +
+    (purchaseClosingCost || 0) +
+    (preRentHoldingCost || 0);
   return totalProjectCost;
 };
 
 export const calculateLoan = ({
   downPaymentPercentage = 0,
   purchasePrice = 0,
-}: FormData): number => {
+}: FormData | Data): number => {
   const loan = (purchasePrice * (100 - downPaymentPercentage)) / 100;
 
   return loan;
 };
 
-export const calculateOutOfPocket = (form: FormData): number => {
+export const calculateOutOfPocket = (form: FormData | Data): number => {
   const totalProjectCost = calculateTotalProjectCost(form);
   const loan = calculateLoan(form);
   const outOfPocket = totalProjectCost - loan;
@@ -148,7 +149,7 @@ export const calculateProjectionSaleExpenses = ({
 };
 
 export const calculateProjectionLoanPayoff = (form: FormData) => {
-  const { projectionYear, loanPeriod, interestRate } = form;
+  const { projectionYear, loanPeriod, loanInterestRate: interestRate } = form;
   const loan = calculateLoan(form);
 
   var loanPayoff = getRemainingBalance(
@@ -226,19 +227,19 @@ export const getNumbersOnly = (text: string) => {
   return text.replace(/\D/g, "");
 };
 
-export const calculateMonthlyMortgagePayment = (form: FormData) => {
-  const { loanPeriod, interestRate } = form;
+export const calculateMonthlyMortgagePayment = (form: FormData | Data) => {
+  const { loanPeriod = 1, loanInterestRate = 0 } = form;
   const loan = calculateLoan(form);
 
   // allow calculation for 0% interest rate
-  if (!interestRate) {
+  if (!loanInterestRate) {
     return loan / (loanPeriod * 12);
   }
 
   // https://www.thebalance.com/calculate-mortgage-315668
   // P = A/D where D = {[(1 + i) ^n] - 1} / [i(1 + i)^n]
   const n = loanPeriod * 12; // 12 months
-  const i = interestRate / 100 / 12; // 12 months
+  const i = loanInterestRate / 100 / 12; // 12 months
   const D = (Math.pow(1 + i, n) - 1) / (i * Math.pow(1 + i, n));
   const monthlyMortgagePayment = loan / D;
 
@@ -280,3 +281,286 @@ export const useLocalStorage = (key: string, initialValue: any) => {
 
   return [storedValue, setValue];
 };
+
+export const calculateMonthlyTotalIncome = ({
+  monthlyRent = 0,
+  otherMonthlyIncome = 0,
+}: Data) => {
+  return monthlyRent + otherMonthlyIncome;
+};
+
+export const calculateTotalMonthyOperatingExpenses = (data: Data) => {
+  const {
+    monthlyRent = 0,
+    otherMonthlyIncome = 0,
+    vacancyRate = 0,
+    repairsAndMaintenanceRate = 0,
+    capitalExpendituresRate = 0,
+    insuranceRate = 0,
+    propertyManagementRate = 0,
+    purchasePrice = 0,
+    taxRate = 0,
+    // floodInsuranceMonthlyCost,
+    monthlyElectricyCost = 0,
+    monthlyWaterAndSewerCost = 0,
+    // gasMonthlyCost,
+    monthlyGarbageCost = 0,
+    monthlyHoaCost = 0,
+    annualPropertyTaxes = 0,
+  } = data;
+
+  const totalMonthlyIncome = calculateMonthlyTotalIncome(data);
+  const vacancyCost = calculateValueByPercentage(
+    totalMonthlyIncome,
+    vacancyRate
+  );
+  const repairsCost = calculateValueByPercentage(
+    totalMonthlyIncome,
+    repairsAndMaintenanceRate
+  );
+  const capitalExpendituresCost = calculateValueByPercentage(
+    totalMonthlyIncome,
+    capitalExpendituresRate
+  );
+  const insuranceCost = calculateValueByPercentage(
+    purchasePrice / 12,
+    insuranceRate
+  );
+  const taxCost = annualPropertyTaxes / 12;
+  const monthlyPropertyManagementCost = calculateValueByPercentage(
+    monthlyRent,
+    propertyManagementRate
+  );
+
+  const totalExpenses =
+    vacancyCost +
+    repairsCost +
+    capitalExpendituresCost +
+    insuranceCost +
+    taxCost +
+    // floodInsuranceMonthlyCost +
+    monthlyElectricyCost +
+    monthlyWaterAndSewerCost +
+    // (gasMonthlyCost || 0) +
+    monthlyGarbageCost +
+    monthlyHoaCost +
+    monthlyPropertyManagementCost;
+
+  // console.log("Starting:");
+  // console.log(vacancyCost);
+  // console.log(repairsCost);
+  // console.log(capitalExpendituresCost);
+  // console.log(insuranceCost);
+  // console.log(taxCost);
+  // console.log(monthlyElectricyCost);
+  // console.log(monthlyWaterAndSewerCost);
+  // console.log(monthlyGarbageCost);
+  // console.log(monthlyHoaCost);
+  // console.log(monthlyPropertyManagementCost);
+  // console.log(totalExpenses);
+  // console.log("Ending:");
+
+  return totalExpenses;
+};
+
+// Unused
+export const calculateMonthlyTotalExpenses = (data: Data) => {
+  const mortgage = calculateMonthlyMortgagePayment(data);
+  const operatingExpenses = calculateTotalMonthyOperatingExpenses(data);
+
+  const totalExpenses = mortgage + operatingExpenses;
+
+  return totalExpenses;
+};
+
+export const caculateProjectedNumber = (
+  initialNumber = 0,
+  growthRate = 0,
+  projectedYear = 0
+) => {
+  const finalAmount =
+    initialNumber * Math.pow(1 + growthRate / 100, projectedYear);
+
+  return finalAmount;
+};
+
+export const calculateProjectedTotalAnnualIncome = (
+  data: Data,
+  projectionYear = 0
+): number => {
+  const totalIncome = calculateMonthlyTotalIncome(data) * 12;
+
+  return caculateProjectedNumber(
+    totalIncome,
+    data.annualIncomeGrowth,
+    projectionYear
+  );
+};
+
+export const calculateProjectedTotalAnnualExpenses = (
+  data: Data,
+  projectionYear = 0
+): number => {
+  const annualMortgage = calculateMonthlyMortgagePayment(data) * 12;
+  const projectedOperatingExpenses = calculateProjectedAnnualOperatingExpenses(
+    data,
+    projectionYear
+  );
+  // console.log(annualMortgage);
+  // console.log(projectedOperatingExpenses);
+  return annualMortgage + projectedOperatingExpenses;
+};
+
+export const calculateProjectedCashOnCashROI = (
+  data: Data,
+  projectionYear = 0
+): number => {
+  const annualCashflow = calculateProjectedTotalAnnualCashflow(
+    data,
+    projectionYear
+  );
+  const outOfPocket = calculateOutOfPocket(data);
+
+  // console.log(annualCashflow);
+  // console.log(outOfPocket);
+  const ROI = (annualCashflow / outOfPocket) * 100;
+
+  return ROI;
+};
+
+export const calculateProjectedTotalAnnualCashflow = (
+  data: Data,
+  projectionYear = 0
+) => {
+  return (
+    calculateProjectedTotalAnnualIncome(data, projectionYear) -
+    calculateProjectedTotalAnnualExpenses(data, projectionYear)
+  );
+};
+
+export const calculateProjectedTotalCashflow = (
+  data: Data,
+  projectionYear = 0
+) => {
+  let totalCashflow = 0;
+  for (let i = 0; i < projectionYear; i++) {
+    totalCashflow +=
+      calculateProjectedTotalAnnualIncome(data, i) -
+      calculateProjectedTotalAnnualExpenses(data, i);
+  }
+  return totalCashflow;
+};
+
+export const calculateProjectedAnnualOperatingExpenses = (
+  data: Data,
+  projectionYear = 0
+): number => {
+  const annualOperatingExpenses =
+    calculateTotalMonthyOperatingExpenses(data) * 12;
+  // console.log(calculateTotalMonthyOperatingExpenses(data));
+
+  return caculateProjectedNumber(
+    annualOperatingExpenses,
+    data.annualExpensesGrowth,
+    projectionYear
+  );
+};
+
+export const calculateProjectedLoanBalance = (
+  data: Data,
+  projectionYear = 0
+) => {
+  const { loanPeriod, loanInterestRate: interestRate } = data;
+  const loan = calculateLoan(data);
+
+  var loanBalance = getRemainingBalance(
+    loan,
+    projectionYear * 12,
+    loanPeriod * 12,
+    interestRate / 100
+  );
+
+  return loanBalance;
+};
+
+export const calculateProjectedPropertyValue = (
+  data: Data,
+  projectionYear = 0
+) => {
+  return caculateProjectedNumber(
+    data.afterRepairPrice || data.purchasePrice,
+    data.annualPropertyValueGrowth,
+    projectionYear
+  );
+};
+
+export const calculateProjectedEquity = (data: Data, projectionYear = 0) => {
+  return (
+    calculateProjectedPropertyValue(data, projectionYear) -
+    calculateProjectedLoanBalance(data, projectionYear)
+  );
+};
+
+export const calculateProjectedTotalProfitIfSold = (
+  data: Data,
+  projectionYear = 0
+) => {
+  // const projectedTotalCashflow = calculateProjectedTotalAnnualCashflow(form);
+  const projectedPropertyValue = calculateProjectedPropertyValue(
+    data,
+    projectionYear
+  );
+  const saleCommission = calculateValueByPercentage(
+    projectedPropertyValue,
+    data.salesExpenses
+  );
+  const equity = calculateProjectedEquity(data, projectionYear);
+
+  const outOfPocket = calculateOutOfPocket(data);
+  const totalCashflow = calculateProjectedTotalCashflow(data, projectionYear);
+
+  const totalProfit = equity - saleCommission - outOfPocket + totalCashflow;
+
+  return totalProfit;
+};
+
+export const calculateProjectedAnnualizedTotalReturn = (
+  data: Data,
+  projectionYear = 0
+) => {
+  const projectedProfit = calculateProjectedTotalProfitIfSold(
+    data,
+    projectionYear
+  );
+  const outOfPocket = calculateOutOfPocket(data);
+
+  // console.log(annualCashflow);
+  // console.log(outOfPocket);
+  const totalInvestmentReturn = projectedProfit / outOfPocket;
+
+  const annualizedReturn =
+    (Math.pow(1 + totalInvestmentReturn, 1 / projectionYear) - 1) * 100;
+
+  return annualizedReturn;
+};
+
+// export const calculateProjectionTotalProfit = (form: FormData) => {
+//   const projectionTotalCashflow = calculateProjectionTotalCashflow(form);
+//   const saleProfit = calculateProjectionSaleProfit(form);
+
+//   const totalProfit = saleProfit + projectionTotalCashflow;
+
+//   return totalProfit;
+// };
+
+// export const calculateProjectionSaleProfit = (form: FormData) => {
+//   const salePrice = calculateProjectionSalePrice(form);
+//   const saleExpenses = calculateProjectionSaleExpenses(form);
+//   const loanPayoff = calculateProjectionLoanPayoff(form);
+//   const totalInvestedCapital = calculateOutOfPocket(form);
+
+//   const saleProfit =
+//     salePrice - saleExpenses - loanPayoff - totalInvestedCapital;
+
+//   return saleProfit;
+// };

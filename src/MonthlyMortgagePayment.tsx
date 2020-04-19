@@ -1,6 +1,6 @@
 import React from "react";
 import SingleInput from "./SingleInput";
-import { FormData } from "./App";
+import { FormData } from "./Calculator";
 import { calculateMonthlyMortgagePayment, toCurrency } from "./helpers";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const MonthlyMortgagePayment = ({ form, handleOnChange }: Props) => {
-  const { loanPeriod, interestRate } = form;
+  const { loanPeriod, loanInterestRate } = form;
 
   const monthlyMortgagePayment = calculateMonthlyMortgagePayment(form);
 
@@ -29,8 +29,8 @@ const MonthlyMortgagePayment = ({ form, handleOnChange }: Props) => {
 
       <SingleInput
         label="Interest Rate"
-        inputValue={interestRate}
-        inputName="interestRate"
+        inputValue={loanInterestRate}
+        inputName="loanInterestRate"
         handleOnChange={handleOnChange}
         suffix="%"
         roundValue={false}

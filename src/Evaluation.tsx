@@ -1,6 +1,6 @@
 import React from "react";
 import SingleInput from "./SingleInput";
-import { FormData } from "./App";
+import { FormData } from "./Calculator";
 import {
   calculateMonthlyCashFlow,
   calculateROIWithoutMortgage,

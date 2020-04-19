@@ -1,6 +1,6 @@
 import React from "react";
 import SingleInput from "./SingleInput";
-import { FormData } from "./App";
+import { FormData } from "./Calculator";
 import { calculateTotalProjectCost, toCurrency } from "./helpers";
 
 interface Props {
@@ -11,9 +11,9 @@ interface Props {
 const TotalProjectCost = ({ form, handleOnChange }: Props) => {
   const {
     purchasePrice,
-    purchaseClosingCosts,
-    preRentHoldingCosts,
-    estimatedRepairs,
+    purchaseClosingCost,
+    preRentHoldingCost,
+    estimateRepairCost,
   } = form;
   return (
     <div>
@@ -29,25 +29,25 @@ const TotalProjectCost = ({ form, handleOnChange }: Props) => {
         required={true}
       />
       <SingleInput
-        label="Purchase Closing Costs"
-        inputValue={purchaseClosingCosts}
-        inputName="purchaseClosingCosts"
+        label="Purchase Closing Cost"
+        inputValue={purchaseClosingCost}
+        inputName="purchaseClosingCost"
         handleOnChange={handleOnChange}
         prefix={"$"}
       />
 
       <SingleInput
-        label="Pre-Rent Holding Costs"
-        inputValue={preRentHoldingCosts}
-        inputName="preRentHoldingCosts"
+        label="Pre-Rent Holding Cost"
+        inputValue={preRentHoldingCost}
+        inputName="preRentHoldingCost"
         handleOnChange={handleOnChange}
         prefix={"$"}
       />
 
       <SingleInput
         label="Estimated Repairs"
-        inputValue={estimatedRepairs}
-        inputName="estimatedRepairs"
+        inputValue={estimateRepairCost}
+        inputName="estimateRepairCost"
         handleOnChange={handleOnChange}
         prefix={"$"}
       />
