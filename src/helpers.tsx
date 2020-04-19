@@ -292,14 +292,12 @@ export const calculateMonthlyTotalIncome = ({
 export const calculateTotalMonthyOperatingExpenses = (data: Data) => {
   const {
     monthlyRent = 0,
-    otherMonthlyIncome = 0,
     vacancyRate = 0,
     repairsAndMaintenanceRate = 0,
     capitalExpendituresRate = 0,
     insuranceRate = 0,
     propertyManagementRate = 0,
     purchasePrice = 0,
-    taxRate = 0,
     // floodInsuranceMonthlyCost,
     monthlyElectricyCost = 0,
     monthlyWaterAndSewerCost = 0,
@@ -334,17 +332,16 @@ export const calculateTotalMonthyOperatingExpenses = (data: Data) => {
 
   const totalExpenses =
     vacancyCost +
-    repairsCost +
-    capitalExpendituresCost +
-    insuranceCost +
-    taxCost +
-    // floodInsuranceMonthlyCost +
-    monthlyElectricyCost +
-    monthlyWaterAndSewerCost +
-    // (gasMonthlyCost || 0) +
-    monthlyGarbageCost +
-    monthlyHoaCost +
-    monthlyPropertyManagementCost;
+      repairsCost +
+      capitalExpendituresCost +
+      insuranceCost +
+      taxCost +
+      // floodInsuranceMonthlyCost +
+      monthlyElectricyCost +
+      monthlyWaterAndSewerCost +
+      // (gasMonthlyCost || 0) +
+      monthlyGarbageCost +
+      monthlyHoaCost || 0 + monthlyPropertyManagementCost;
 
   // console.log("Starting:");
   // console.log(vacancyCost);
@@ -534,33 +531,14 @@ export const calculateProjectedAnnualizedTotalReturn = (
   );
   const outOfPocket = calculateOutOfPocket(data);
 
-  // console.log(annualCashflow);
-  // console.log(outOfPocket);
   const totalInvestmentReturn = projectedProfit / outOfPocket;
 
   const annualizedReturn =
     (Math.pow(1 + totalInvestmentReturn, 1 / projectionYear) - 1) * 100;
 
+  // console.log(projectedProfit);
+  // console.log(outOfPocket);
+  // console.log(totalInvestmentReturn);
+  // console.log(annualizedReturn);
   return annualizedReturn;
 };
-
-// export const calculateProjectionTotalProfit = (form: FormData) => {
-//   const projectionTotalCashflow = calculateProjectionTotalCashflow(form);
-//   const saleProfit = calculateProjectionSaleProfit(form);
-
-//   const totalProfit = saleProfit + projectionTotalCashflow;
-
-//   return totalProfit;
-// };
-
-// export const calculateProjectionSaleProfit = (form: FormData) => {
-//   const salePrice = calculateProjectionSalePrice(form);
-//   const saleExpenses = calculateProjectionSaleExpenses(form);
-//   const loanPayoff = calculateProjectionLoanPayoff(form);
-//   const totalInvestedCapital = calculateOutOfPocket(form);
-
-//   const saleProfit =
-//     salePrice - saleExpenses - loanPayoff - totalInvestedCapital;
-
-//   return saleProfit;
-// };

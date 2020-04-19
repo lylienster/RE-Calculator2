@@ -30,32 +30,32 @@ const RentalInfo = ({ data, handleOnChange }: Props) => {
 
       <h3 className="pt-md-3">Fixed Landlord-Paid Expenses</h3>
       <label>Electricity</label>
-      <FormControl
-        value={data.monthlyElectricyCost || ""}
+      <NumberInput
+        value={data.monthlyElectricyCost}
         onChange={handleOnChange}
         name="monthlyElectricyCost"
       />
       <label>{`Water & Sewer`}</label>
-      <FormControl
-        value={data.monthlyWaterAndSewerCost || ""}
+      <NumberInput
+        value={data.monthlyWaterAndSewerCost}
         onChange={handleOnChange}
         name="monthlyWaterAndSewerCost"
       />
       <label>PMI</label>
-      <FormControl
-        value={data.monthlyPmiCost || ""}
+      <NumberInput
+        value={data.monthlyPmiCost}
         onChange={handleOnChange}
         name="monthlyPmiCost"
       />
       <label>Garbage</label>
-      <FormControl
-        value={data.monthlyGarbageCost || ""}
+      <NumberInput
+        value={data.monthlyGarbageCost}
         onChange={handleOnChange}
         name="monthlyGarbageCost"
       />
       <label>HOAs</label>
-      <FormControl
-        value={data.monthlyHoaCost || ""}
+      <NumberInput
+        value={data.monthlyHoaCost}
         onChange={handleOnChange}
         name="monthlyHoaCost"
       />
@@ -69,8 +69,8 @@ const RentalInfo = ({ data, handleOnChange }: Props) => {
         disabled={true}
       />
       <label>Other Monthly Expenses</label>
-      <FormControl
-        value={data.otherMontnlyExpenses || ""}
+      <NumberInput
+        value={data.otherMontnlyExpenses}
         onChange={handleOnChange}
         name="otherMontnlyExpenses"
       />

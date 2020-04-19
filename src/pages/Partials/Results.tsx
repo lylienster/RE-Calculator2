@@ -19,7 +19,6 @@ import "./Results.css";
 
 interface Props {
   data: Data;
-  handleOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface ProjectedData {
@@ -37,7 +36,7 @@ interface ProjectedData {
   annualizedTotalReturn: string;
 }
 
-const Results = ({ data, handleOnChange }: Props) => {
+const AnalysisOverTime = ({ data }: Props) => {
   const projectionYears = [1, 2, 5, 10, 15, 20, 30];
   const projectedNumbersByYear = projectionYears.map((year) => {
     const projectedYear = year - 1;
@@ -165,4 +164,4 @@ const Results = ({ data, handleOnChange }: Props) => {
   );
 };
 
-export default Results;
+export default AnalysisOverTime;

@@ -1,5 +1,4 @@
 import React from "react";
-import { FormControl } from "react-bootstrap";
 import { Data } from "../BrrrrCalculator";
 import NumberInput from "../Components/NumberInput";
 
@@ -20,38 +19,38 @@ const PurchaseInfo = ({ data, handleOnChange }: Props) => {
         required={true}
       />
       <label>After Repair Value</label>
-      <FormControl
-        value={data.afterRepairPrice || ""}
+      <NumberInput
+        value={data.afterRepairPrice}
         onChange={handleOnChange}
         name="afterRepairPrice"
       />
       <label>Purchase Closing Cost</label>
-      <FormControl
-        value={data.purchaseClosingCost || ""}
+      <NumberInput
+        value={data.purchaseClosingCost}
         onChange={handleOnChange}
         name="purchaseClosingCost"
       />
       <label>Estimated Repair Cost</label>
-      <FormControl
-        value={data.estimateRepairCost || ""}
+      <NumberInput
+        value={data.estimateRepairCost}
         onChange={handleOnChange}
         name="estimateRepairCost"
       />
       <label>Down Payment of Purchase Price</label>
-      <FormControl
-        value={data.downPaymentPercentage || ""}
+      <NumberInput
+        value={data.downPaymentPercentage}
         onChange={handleOnChange}
         name="downPaymentPercentage"
       />
       <label>Loan Interest Rate</label>
-      <FormControl
-        value={data.loanInterestRate || ""}
+      <NumberInput
+        value={data.loanInterestRate}
         onChange={handleOnChange}
         name="loanInterestRate"
       />
       <label>Amortized Over How Many Years</label>
-      <FormControl
-        value={data.loanPeriod || ""}
+      <NumberInput
+        value={data.loanPeriod}
         onChange={handleOnChange}
         name="loanPeriod"
       />

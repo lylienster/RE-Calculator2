@@ -18,42 +18,49 @@ const PropertyInfo = ({ data, handleOnChange }: Props) => {
         value={data.address || ""}
         onChange={handleOnChange}
         name="address"
+        type="text"
       />
       <label>Property City</label>
       <FormControl
         value={data.city || ""}
         onChange={handleOnChange}
         name="city"
+        type="text"
       />
       <label>Property State</label>
       <FormControl
         value={data.state || ""}
         onChange={handleOnChange}
         name="state"
+        type="text"
       />
       <label>Property Zip</label>
       <FormControl
         value={data.zip || ""}
         onChange={handleOnChange}
         name="zip"
+        type="text"
       />
       <label>Annual Property Taxes</label>
       <FormControl
         value={data.annualPropertyTaxes || ""}
         onChange={handleOnChange}
         name="annualPropertyTaxes"
+        type="text"
       />
       <label>MLS Number</label>
       <FormControl
         value={data.mlsNumber || ""}
         onChange={handleOnChange}
         name="mlsNumber"
+        type="text"
       />
       <label>Property Sales Description</label>
       <FormControl
         value={data.salesDescription || ""}
         onChange={handleOnChange}
         name="salesDescription"
+        type="text"
       />
     </div>
   );

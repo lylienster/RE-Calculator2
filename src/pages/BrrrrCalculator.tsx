@@ -3,8 +3,9 @@ import { FormControl, InputGroup, Container } from "react-bootstrap";
 import PropertyInfo from "./Partials/PropertyInfo";
 import PurchaseInfo from "./Partials/PurchaseInfo";
 import RentalInfo from "./Partials/RentalInfo";
-import Results from "./Partials/Results";
+import AnalysisOverTime from "./Partials/Results";
 import { useLocalStorage } from "../helpers";
+import Report from "./Partials/Report";
 
 export interface Data {
   //propertyInfo
@@ -74,8 +75,8 @@ const BrrrrCalculator = () => {
     const value = event.target.value;
     const newForm = {
       ...data,
-      [event.target.name]:
-        isNaN(Number(value)) || value === "" ? value : Number(value),
+      [event.target.name]: event.target.type === "text" ? value : Number(value),
+      // isNaN(Number(value)) || value === "" ? value : Number(value),
     };
     setData(newForm);
     setSavedData(newForm);
@@ -87,9 +88,10 @@ const BrrrrCalculator = () => {
       <PropertyInfo data={data} handleOnChange={handleOnChange} />
       <PurchaseInfo data={data} handleOnChange={handleOnChange} />
       <RentalInfo data={data} handleOnChange={handleOnChange} />
-      <Results data={data} handleOnChange={handleOnChange} />
+      <Report data={data} />
+      <AnalysisOverTime data={data} />
 
-      <span>{JSON.stringify(data)}</span>
+      <div style={{ wordBreak: "break-word" }}>{JSON.stringify(data)}</div>
     </Container>
   );
 };
