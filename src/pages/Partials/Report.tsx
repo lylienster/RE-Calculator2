@@ -16,6 +16,8 @@ import {
   calculateMonthlyCapitalExpendituresCost,
   calculateMonthlyInsuranceCost,
   calculateMonthlyTaxCost,
+  calculateTotalMonthyOperatingExpenses,
+  calculateMonthlyTotalIncome,
 } from "../../helpers";
 
 interface Props {
@@ -69,42 +71,85 @@ const Report = ({ data }: Props) => {
     },
   ];
 
+  const formatDataPointValue = (number: number): number => {
+    return Number((number || 0).toFixed(2));
+  };
+  const formatDataPointLabel = (label: string, value: number): string => {
+    return `${label}: $${formatDataPointValue(value)}`;
+  };
+
   const getExpenseDataPoints = () => {
-    const getValue = (number: number): number => {
-      return Number(number.toFixed(2));
-    };
-    const getLabel = (label: string, value: number): string => {
-      return `${label}: $${value.toFixed(2)}`;
-    };
     return [
       ["Expense", "Cost"],
       [
-        getLabel("Mortgage", calculateMonthlyMortgagePayment(data)),
-        getValue(calculateMonthlyMortgagePayment(data)),
+        formatDataPointLabel("Mortgage", calculateMonthlyMortgagePayment(data)),
+        formatDataPointValue(calculateMonthlyMortgagePayment(data)),
       ],
       [
-        getLabel("Vacancy", calculateMonthlyVacancyCost(data)),
-        getValue(calculateMonthlyVacancyCost(data)),
+        formatDataPointLabel("Vacancy", calculateMonthlyVacancyCost(data)),
+        formatDataPointValue(calculateMonthlyVacancyCost(data)),
       ],
       [
-        getLabel("Management", calculateMonthlyManagementCost(data)),
-        getValue(calculateMonthlyManagementCost(data)),
+        formatDataPointLabel(
+          "Management",
+          calculateMonthlyManagementCost(data)
+        ),
+        formatDataPointValue(calculateMonthlyManagementCost(data)),
       ],
       [
-        getLabel("Repairs", calculateMonthlyRepairsCost(data)),
-        getValue(calculateMonthlyRepairsCost(data)),
+        formatDataPointLabel("Repairs", calculateMonthlyRepairsCost(data)),
+        formatDataPointValue(calculateMonthlyRepairsCost(data)),
       ],
       [
-        getLabel("CapEx", calculateMonthlyCapitalExpendituresCost(data)),
-        getValue(calculateMonthlyCapitalExpendituresCost(data)),
+        formatDataPointLabel(
+          "CapEx",
+          calculateMonthlyCapitalExpendituresCost(data)
+        ),
+        formatDataPointValue(calculateMonthlyCapitalExpendituresCost(data)),
       ],
       [
-        getLabel("Insurance", calculateMonthlyInsuranceCost(data)),
-        getValue(calculateMonthlyInsuranceCost(data)),
+        formatDataPointLabel("Insurance", calculateMonthlyInsuranceCost(data)),
+        formatDataPointValue(calculateMonthlyInsuranceCost(data)),
       ],
       [
-        getLabel("Tax", calculateMonthlyTaxCost(data)),
-        getValue(calculateMonthlyTaxCost(data)),
+        formatDataPointLabel("Tax", calculateMonthlyTaxCost(data)),
+        formatDataPointValue(calculateMonthlyTaxCost(data)),
+      ],
+    ];
+  };
+
+  const fiftyPercentRule = [
+    {
+      key: "Total Monthly Income",
+      value: `$${toCurrency(calculateMonthlyTotalIncome(data))}`,
+    },
+    {
+      key: "x50% for Expenses",
+      value: `$${toCurrency(calculateMonthlyTotalIncome(data) / 2)}`,
+    },
+    {
+      key: "Monthly Payment/Interest Payment",
+      value: `$${toCurrency(calculateMonthlyMortgagePayment(data))}`,
+    },
+    {
+      key: "Total Monthly Cashflow using 50% Rule",
+      value: `$${toCurrency(
+        calculateMonthlyTotalIncome(data) / 2 -
+          calculateMonthlyMortgagePayment(data)
+      )}`,
+    },
+  ];
+
+  const getIncomeDataPoints = () => {
+    return [
+      ["Income", "Value"],
+      [
+        formatDataPointLabel("Rent", data.monthlyRent),
+        formatDataPointValue(data.monthlyRent),
+      ],
+      [
+        formatDataPointLabel("Other", data.otherMonthlyIncome),
+        formatDataPointValue(data.otherMonthlyIncome),
       ],
     ];
   };
@@ -135,6 +180,22 @@ const Report = ({ data }: Props) => {
               className="justify-content-center"
             >
               <Tab eventKey="expenses" title="Expenses">
+                <Row>
+                  <Col md={6}></Col>
+                  <Col md={4}>Total Operating Expeneses</Col>
+                  <Col md={2} className="font-weight-bold text-right">
+                    {`$${toCurrency(
+                      calculateTotalMonthyOperatingExpenses(data)
+                    )}`}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={6}></Col>
+                  <Col md={4}>Mortgage Expeneses</Col>
+                  <Col md={2} className="font-weight-bold text-right">
+                    {`$${toCurrency(calculateMonthlyMortgagePayment(data))}`}
+                  </Col>
+                </Row>
                 <div className="justify-content-center">
                   <Chart
                     // width={"500px"}
@@ -148,10 +209,37 @@ const Report = ({ data }: Props) => {
                 </div>
               </Tab>
               <Tab eventKey="income" title="Income">
-                Test 2
+                <Row>
+                  <Col md={6}></Col>
+                  <Col md={4}>Monthly Income</Col>
+                  <Col md={2} className="font-weight-bold text-right">
+                    {`$${toCurrency(calculateMonthlyTotalIncome(data))}`}
+                  </Col>
+                </Row>
+                <div className="justify-content-center">
+                  <Chart
+                    // width={"500px"}
+                    height={"300px"}
+                    chartType="PieChart"
+                    loader={<div>Loading Chart</div>}
+                    data={getIncomeDataPoints()}
+                    options={{}}
+                    rootProps={{ "income-chart": "1" }}
+                  />
+                </div>
               </Tab>
               <Tab eventKey="50percentRule" title="50 % Rule">
-                Test 3
+                <div className="pt-3">
+                  {fiftyPercentRule.map((x) => (
+                    <Row>
+                      <Col md={4}></Col>
+                      <Col md={6}>{x.key}</Col>
+                      <Col md={2} className="font-weight-bold text-right">
+                        {x.value}
+                      </Col>
+                    </Row>
+                  ))}
+                </div>
               </Tab>
             </Tabs>
           </Col>
