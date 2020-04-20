@@ -33,6 +33,15 @@ export const calculateLoan = ({
   return loan;
 };
 
+export const calculateDownPayment = ({
+  downPaymentPercentage = 0,
+  purchasePrice = 0,
+}: FormData | Data) => {
+  const downPayment = (purchasePrice * downPaymentPercentage) / 100;
+
+  return downPayment;
+};
+
 export const calculateOutOfPocket = (form: FormData | Data): number => {
   const totalProjectCost = calculateTotalProjectCost(form);
   const loan = calculateLoan(form);
@@ -289,59 +298,28 @@ export const calculateMonthlyTotalIncome = ({
   return monthlyRent + otherMonthlyIncome;
 };
 
-export const calculateTotalMonthyOperatingExpenses = (data: Data) => {
+export const calculateTotalMonthyOperatingExpenses = (data: Data): number => {
   const {
-    monthlyRent = 0,
-    vacancyRate = 0,
-    repairsAndMaintenanceRate = 0,
-    capitalExpendituresRate = 0,
-    insuranceRate = 0,
-    propertyManagementRate = 0,
-    purchasePrice = 0,
     // floodInsuranceMonthlyCost,
     monthlyElectricyCost = 0,
     monthlyWaterAndSewerCost = 0,
     // gasMonthlyCost,
     monthlyGarbageCost = 0,
     monthlyHoaCost = 0,
-    annualPropertyTaxes = 0,
   } = data;
 
-  const totalMonthlyIncome = calculateMonthlyTotalIncome(data);
-  const vacancyCost = calculateValueByPercentage(
-    totalMonthlyIncome,
-    vacancyRate
-  );
-  const repairsCost = calculateValueByPercentage(
-    totalMonthlyIncome,
-    repairsAndMaintenanceRate
-  );
-  const capitalExpendituresCost = calculateValueByPercentage(
-    totalMonthlyIncome,
-    capitalExpendituresRate
-  );
-  const insuranceCost = calculateValueByPercentage(
-    purchasePrice / 12,
-    insuranceRate
-  );
-  const taxCost = annualPropertyTaxes / 12;
-  const monthlyPropertyManagementCost = calculateValueByPercentage(
-    monthlyRent,
-    propertyManagementRate
-  );
-
   const totalExpenses =
-    vacancyCost +
-      repairsCost +
-      capitalExpendituresCost +
-      insuranceCost +
-      taxCost +
+    calculateMonthlyVacancyCost(data) +
+      calculateMonthlyRepairsCost(data) +
+      calculateMonthlyCapitalExpendituresCost(data) +
+      calculateMonthlyInsuranceCost(data) +
+      calculateMonthlyTaxCost(data) +
       // floodInsuranceMonthlyCost +
-      monthlyElectricyCost +
-      monthlyWaterAndSewerCost +
-      // (gasMonthlyCost || 0) +
-      monthlyGarbageCost +
-      monthlyHoaCost || 0 + monthlyPropertyManagementCost;
+      monthlyElectricyCost ||
+    0 + monthlyWaterAndSewerCost ||
+    0 + monthlyGarbageCost ||
+    0 + monthlyHoaCost ||
+    0 + calculateMonthlyManagementCost(data);
 
   // console.log("Starting:");
   // console.log(vacancyCost);
@@ -360,12 +338,50 @@ export const calculateTotalMonthyOperatingExpenses = (data: Data) => {
   return totalExpenses;
 };
 
+export const calculateMonthlyVacancyCost = (data: Data) => {
+  const totalMonthlyIncome = calculateMonthlyTotalIncome(data);
+
+  return calculateValueByPercentage(totalMonthlyIncome, data.vacancyRate);
+};
+
+export const calculateMonthlyManagementCost = (data: Data) => {
+  const totalMonthlyIncome = calculateMonthlyTotalIncome(data);
+
+  return calculateValueByPercentage(
+    totalMonthlyIncome,
+    data.propertyManagementRate
+  );
+};
+export const calculateMonthlyCapitalExpendituresCost = (data: Data) => {
+  const totalMonthlyIncome = calculateMonthlyTotalIncome(data);
+
+  return calculateValueByPercentage(
+    totalMonthlyIncome,
+    data.capitalExpendituresRate
+  );
+};
+export const calculateMonthlyRepairsCost = (data: Data) => {
+  const totalMonthlyIncome = calculateMonthlyTotalIncome(data);
+
+  return calculateValueByPercentage(
+    totalMonthlyIncome,
+    data.repairsAndMaintenanceRate
+  );
+};
+export const calculateMonthlyInsuranceCost = (data: Data) => {
+  const totalMonthlyIncome = calculateMonthlyTotalIncome(data);
+
+  return calculateValueByPercentage(totalMonthlyIncome, data.insuranceRate);
+};
+export const calculateMonthlyTaxCost = (data: Data) => {
+  return data.annualPropertyTaxes / 12;
+};
 // Unused
-export const calculateMonthlyTotalExpenses = (data: Data) => {
+export const calculateMonthlyTotalExpenses = (data: Data): number => {
   const mortgage = calculateMonthlyMortgagePayment(data);
   const operatingExpenses = calculateTotalMonthyOperatingExpenses(data);
 
-  const totalExpenses = mortgage + operatingExpenses;
+  const totalExpenses = Number(mortgage) + Number(operatingExpenses);
 
   return totalExpenses;
 };

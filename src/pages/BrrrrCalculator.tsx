@@ -75,7 +75,8 @@ const BrrrrCalculator = () => {
     const value = event.target.value;
     const newForm = {
       ...data,
-      [event.target.name]: event.target.type === "text" ? value : Number(value),
+      [event.target.name]:
+        event.target.type === "text" || value === "" ? value : Number(value),
       // isNaN(Number(value)) || value === "" ? value : Number(value),
     };
     setData(newForm);
