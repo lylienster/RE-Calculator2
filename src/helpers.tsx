@@ -3,6 +3,9 @@ import { useState } from "react";
 import { Data } from "./pages/BrrrrCalculator";
 
 export const toCurrency = (number: number): string => {
+  if (!number) {
+    return "";
+  }
   const formattedValue = number.toLocaleString(undefined, {
     maximumFractionDigits: 2,
   });
