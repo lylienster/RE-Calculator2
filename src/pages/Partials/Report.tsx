@@ -18,10 +18,21 @@ import {
   calculateMonthlyTaxCost,
   calculateTotalMonthyOperatingExpenses,
   calculateMonthlyTotalIncome,
+  calculateMonthlyTotalExpenses,
+  calculateProjectedTotalAnnualCashflow,
+  calculateProjectedCashOnCashROI,
+  calculateNetOperatingIncome,
+  calculatePurchaseCapRate,
+  calculateProFormaCap,
 } from "../../helpers";
 
 interface Props {
   data: Data;
+}
+
+interface KeyValuePair {
+  key: string;
+  value: string;
 }
 
 const Report = ({ data }: Props) => {
@@ -69,7 +80,7 @@ const Report = ({ data }: Props) => {
       key: `Total Cash Needed`,
       value: `$${toCurrency(calculateOutOfPocket(data))}`,
     },
-  ];
+  ] as KeyValuePair[];
 
   const formatDataPointValue = (number: number): number => {
     return Number((number || 0).toFixed(2));
@@ -128,11 +139,11 @@ const Report = ({ data }: Props) => {
       value: `$${toCurrency(calculateMonthlyTotalIncome(data) / 2)}`,
     },
     {
-      key: "Monthly Payment/Interest Payment",
+      key: "Mortgage Payment",
       value: `$${toCurrency(calculateMonthlyMortgagePayment(data))}`,
     },
     {
-      key: "Total Monthly Cashflow using 50% Rule",
+      key: "Monthly Cashflow using 50% Rule",
       value: `$${toCurrency(
         calculateMonthlyTotalIncome(data) / 2 -
           calculateMonthlyMortgagePayment(data)
@@ -154,48 +165,143 @@ const Report = ({ data }: Props) => {
     ];
   };
 
+  const displayKeyValuePairs = (pairs: KeyValuePair[]) => {
+    return pairs.map((x) => (
+      <Row>
+        <Col xs={8}>{x.key}</Col>
+        <Col xs={4} className="font-weight-bold text-right">
+          {x.value}
+        </Col>
+      </Row>
+    ));
+  };
+
+  const displayKeyValuePairs2 = (fiftyPercentRule: KeyValuePair[]) => {
+    return fiftyPercentRule.map((x) => (
+      <Row>
+        <Col md={6}></Col>
+        <Col md={6}>
+          <Row>
+            <Col xs={8}>{x.key}</Col>
+            <Col xs={4} className="font-weight-bold text-right">
+              {x.value}
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    ));
+  };
+
+  const displayKeyValuePairs3 = (pairs: KeyValuePair[]) => {
+    return (
+      <Row>
+        {pairs.map((x) => (
+          <Col md={3}>
+            <Row className="py-md-2">
+              <Col md={12} xs={8}>
+                {x.key}
+              </Col>
+              <Col md={12} xs={4} className="font-weight-bold ">
+                <span className="d-none d-sm-block">{x.value}</span>
+                <span className="text-right d-block d-sm-none">{x.value}</span>
+              </Col>
+            </Row>
+          </Col>
+        ))}
+      </Row>
+    );
+  };
+
+  const getExpenseTabKeyValuePairs = [
+    {
+      key: "Total Operating Expeneses",
+      value: `$${toCurrency(calculateTotalMonthyOperatingExpenses(data))}`,
+    },
+    {
+      key: "Mortgage Expeneses",
+      value: `$${toCurrency(calculateMonthlyMortgagePayment(data))}`,
+    },
+  ] as KeyValuePair[];
+
+  const getIncomeTabKeyValuePairs = [
+    {
+      key: "Monthly Income",
+      value: `$${toCurrency(calculateMonthlyTotalIncome(data))}`,
+    },
+  ] as KeyValuePair[];
+
   return (
     <div style={{ marginTop: "30px" }}>
       <h2>{hasFullAddress && `${address} ${city} ${state}, ${zip}`}</h2>
       <Container>
-        <Row>Test</Row>
-        <Row>
+        <Row className="py-3">
           <Col md={4}>
-            {summary.map((x) => (
-              <Row>
-                <Col md={8}>{x.key}</Col>
-                <Col md={4} className="font-weight-bold text-right">
-                  {x.value}
-                </Col>
-              </Row>
-            ))}
+            <Row>
+              <Col md={12} xs={8}>
+                Purchase Price
+              </Col>
+              <Col md={12} xs={4} className="font-weight-bold">
+                <span className="d-none d-sm-block">
+                  {`$${toCurrency(data.purchasePrice)}`}
+                </span>
+                <span className="text-right d-block d-sm-none">
+                  {`$${toCurrency(data.purchasePrice)}`}
+                </span>
+              </Col>
+            </Row>
           </Col>
           <Col md={8}>
-            {/* <Row> */}
+            {displayKeyValuePairs3([
+              {
+                key: "Monthly Income",
+                value: `$${toCurrency(calculateMonthlyTotalIncome(data))}`,
+              },
+              {
+                key: "Monthly Expenses",
+                value: `$${toCurrency(calculateMonthlyTotalExpenses(data))}`,
+              },
+
+              {
+                key: "Monthly Cashflow",
+                value: `$${toCurrency(
+                  calculateProjectedTotalAnnualCashflow(data) / 12
+                )}`,
+              },
+              {
+                key: "Pro Forma Cap",
+                value: `${toCurrency(calculateProFormaCap(data))}%`,
+              },
+              {
+                key: "Net Operating Income",
+                value: `$${toCurrency(calculateNetOperatingIncome(data))}`,
+              },
+              {
+                key: "Total Cash Needed",
+                value: `$${toCurrency(calculateOutOfPocket(data))}`,
+              },
+              {
+                key: "Cash on Cash ROI",
+                value: `${toCurrency(calculateProjectedCashOnCashROI(data))}%`,
+              },
+              {
+                key: "Purchase Cap Rate",
+                value: `${toCurrency(calculatePurchaseCapRate(data))}%`,
+              },
+            ])}
+          </Col>
+        </Row>
+        <Row>
+          <Col md={4}>{displayKeyValuePairs(summary)}</Col>
+          <Col md={8}>
             <Tabs
               id="pie-charts"
               activeKey={key}
               onSelect={(k: string) => setKey(k)}
               variant="pills"
-              className="justify-content-center"
+              className="justify-content-center py-3"
             >
               <Tab eventKey="expenses" title="Expenses">
-                <Row>
-                  <Col md={6}></Col>
-                  <Col md={4}>Total Operating Expeneses</Col>
-                  <Col md={2} className="font-weight-bold text-right">
-                    {`$${toCurrency(
-                      calculateTotalMonthyOperatingExpenses(data)
-                    )}`}
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={6}></Col>
-                  <Col md={4}>Mortgage Expeneses</Col>
-                  <Col md={2} className="font-weight-bold text-right">
-                    {`$${toCurrency(calculateMonthlyMortgagePayment(data))}`}
-                  </Col>
-                </Row>
+                {displayKeyValuePairs2(getExpenseTabKeyValuePairs)}
                 <div className="justify-content-center">
                   <Chart
                     // width={"500px"}
@@ -209,36 +315,24 @@ const Report = ({ data }: Props) => {
                 </div>
               </Tab>
               <Tab eventKey="income" title="Income">
-                <Row>
-                  <Col md={6}></Col>
-                  <Col md={4}>Monthly Income</Col>
-                  <Col md={2} className="font-weight-bold text-right">
-                    {`$${toCurrency(calculateMonthlyTotalIncome(data))}`}
-                  </Col>
-                </Row>
-                <div className="justify-content-center">
-                  <Chart
-                    // width={"500px"}
-                    height={"300px"}
-                    chartType="PieChart"
-                    loader={<div>Loading Chart</div>}
-                    data={getIncomeDataPoints()}
-                    options={{}}
-                    rootProps={{ "income-chart": "1" }}
-                  />
+                <div className="pt-3">
+                  {displayKeyValuePairs2(getIncomeTabKeyValuePairs)}
+                  <div className="justify-content-center">
+                    <Chart
+                      // width={"500px"}
+                      height={"300px"}
+                      chartType="PieChart"
+                      loader={<div>Loading Chart</div>}
+                      data={getIncomeDataPoints()}
+                      options={{}}
+                      rootProps={{ "income-chart": "1" }}
+                    />
+                  </div>
                 </div>
               </Tab>
               <Tab eventKey="50percentRule" title="50 % Rule">
                 <div className="pt-3">
-                  {fiftyPercentRule.map((x) => (
-                    <Row>
-                      <Col md={4}></Col>
-                      <Col md={6}>{x.key}</Col>
-                      <Col md={2} className="font-weight-bold text-right">
-                        {x.value}
-                      </Col>
-                    </Row>
-                  ))}
+                  {displayKeyValuePairs2(fiftyPercentRule)}
                 </div>
               </Tab>
             </Tabs>

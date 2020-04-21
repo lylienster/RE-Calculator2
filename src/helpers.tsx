@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Data } from "./pages/BrrrrCalculator";
 
 export const toCurrency = (number: number): string => {
-  if (!number) {
+  if (Number.isNaN(number)) {
     return "";
   }
   const formattedValue = number.toLocaleString(undefined, {
@@ -303,38 +303,37 @@ export const calculateMonthlyTotalIncome = ({
 
 export const calculateTotalMonthyOperatingExpenses = (data: Data): number => {
   const {
-    // floodInsuranceMonthlyCost,
     monthlyElectricyCost = 0,
     monthlyWaterAndSewerCost = 0,
-    // gasMonthlyCost,
     monthlyGarbageCost = 0,
     monthlyHoaCost = 0,
+    otherMontnlyExpenses = 0,
   } = data;
 
   const totalExpenses =
     calculateMonthlyVacancyCost(data) +
-      calculateMonthlyRepairsCost(data) +
-      calculateMonthlyCapitalExpendituresCost(data) +
-      calculateMonthlyInsuranceCost(data) +
-      calculateMonthlyTaxCost(data) +
-      // floodInsuranceMonthlyCost +
-      monthlyElectricyCost ||
-    0 + monthlyWaterAndSewerCost ||
-    0 + monthlyGarbageCost ||
-    0 + monthlyHoaCost ||
-    0 + calculateMonthlyManagementCost(data);
+    calculateMonthlyRepairsCost(data) +
+    calculateMonthlyCapitalExpendituresCost(data) +
+    calculateMonthlyInsuranceCost(data) +
+    calculateMonthlyTaxCost(data) +
+    calculateMonthlyManagementCost(data) +
+    (monthlyElectricyCost || 0) +
+    (monthlyWaterAndSewerCost || 0) +
+    (monthlyGarbageCost || 0) +
+    (monthlyHoaCost || 0) +
+    (otherMontnlyExpenses || 0);
 
   // console.log("Starting:");
-  // console.log(vacancyCost);
-  // console.log(repairsCost);
-  // console.log(capitalExpendituresCost);
-  // console.log(insuranceCost);
-  // console.log(taxCost);
+  // console.log(calculateMonthlyVacancyCost(data));
+  // console.log(calculateMonthlyRepairsCost(data));
+  // console.log(calculateMonthlyCapitalExpendituresCost(data));
+  // console.log(calculateMonthlyInsuranceCost(data));
+  // console.log(calculateMonthlyTaxCost(data));
+  // console.log(calculateMonthlyManagementCost(data));
   // console.log(monthlyElectricyCost);
   // console.log(monthlyWaterAndSewerCost);
   // console.log(monthlyGarbageCost);
   // console.log(monthlyHoaCost);
-  // console.log(monthlyPropertyManagementCost);
   // console.log(totalExpenses);
   // console.log("Ending:");
 
@@ -348,10 +347,8 @@ export const calculateMonthlyVacancyCost = (data: Data) => {
 };
 
 export const calculateMonthlyManagementCost = (data: Data) => {
-  const totalMonthlyIncome = calculateMonthlyTotalIncome(data);
-
   return calculateValueByPercentage(
-    totalMonthlyIncome,
+    data.monthlyRent,
     data.propertyManagementRate
   );
 };
@@ -560,4 +557,19 @@ export const calculateProjectedAnnualizedTotalReturn = (
   // console.log(totalInvestmentReturn);
   // console.log(annualizedReturn);
   return annualizedReturn;
+};
+
+export const calculateNetOperatingIncome = (data: Data) => {
+  return (
+    calculateProjectedTotalAnnualIncome(data) -
+    calculateProjectedAnnualOperatingExpenses(data)
+  );
+};
+
+export const calculatePurchaseCapRate = (data: Data) => {
+  return (calculateNetOperatingIncome(data) / data.purchasePrice) * 100;
+};
+
+export const calculateProFormaCap = (data: Data) => {
+  return (calculateNetOperatingIncome(data) / data.afterRepairPrice) * 100;
 };

@@ -85,7 +85,7 @@ const BrrrrCalculator = () => {
 
   return (
     <Container>
-      <h1>{`Buy & Hold Analysis`}</h1>
+      <h1 className="text-center">{`Buy & Hold Analysis`}</h1>
       <PropertyInfo data={data} handleOnChange={handleOnChange} />
       <PurchaseInfo data={data} handleOnChange={handleOnChange} />
       <RentalInfo data={data} handleOnChange={handleOnChange} />
