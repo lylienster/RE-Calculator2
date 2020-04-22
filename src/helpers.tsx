@@ -307,7 +307,8 @@ export const calculateTotalMonthyOperatingExpenses = (data: Data): number => {
     monthlyWaterAndSewerCost = 0,
     monthlyGarbageCost = 0,
     monthlyHoaCost = 0,
-    otherMonthlyExpenses: otherMontnlyExpenses = 0,
+    otherMonthlyExpenses = 0,
+    monthlyInsurance = 0,
   } = data;
 
   const totalExpenses =
@@ -321,7 +322,8 @@ export const calculateTotalMonthyOperatingExpenses = (data: Data): number => {
     (monthlyWaterAndSewerCost || 0) +
     (monthlyGarbageCost || 0) +
     (monthlyHoaCost || 0) +
-    (otherMontnlyExpenses || 0);
+    (monthlyInsurance || 0) +
+    (otherMonthlyExpenses || 0);
 
   // console.log("Starting:");
   // console.log(calculateMonthlyVacancyCost(data));
@@ -373,8 +375,8 @@ export const calculateMonthlyInsuranceCost = (data: Data) => {
 
   return calculateValueByPercentage(totalMonthlyIncome, data.insuranceRate);
 };
-export const calculateMonthlyTaxCost = (data: Data) => {
-  return data.annualPropertyTaxes / 12;
+export const calculateMonthlyTaxCost = ({ annualPropertyTaxes = 0 }: Data) => {
+  return annualPropertyTaxes / 12;
 };
 
 export const calculateMonthlyTotalExpenses = (data: Data): number => {

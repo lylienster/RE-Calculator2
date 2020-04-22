@@ -101,7 +101,7 @@ const Report = ({ data }: Props) => {
       createDataPoint("Management", calculateMonthlyManagementCost(data)),
       createDataPoint("Repairs", calculateMonthlyRepairsCost(data)),
       createDataPoint("CapEx", calculateMonthlyCapitalExpendituresCost(data)),
-      createDataPoint("Insurance", calculateMonthlyInsuranceCost(data)),
+      createDataPoint("Insurance", data.monthlyInsurance),
       createDataPoint("Tax", calculateMonthlyTaxCost(data)),
       createDataPoint("HOA", data.monthlyHoaCost),
       createDataPoint("Other Expenses", data.otherMonthlyExpenses),

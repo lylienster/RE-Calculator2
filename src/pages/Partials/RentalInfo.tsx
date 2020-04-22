@@ -1,8 +1,7 @@
 import React from "react";
-import { FormControl } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import { Data } from "../BrrrrCalculator";
-import NumberInput from "../Components/NumberInput";
-import { toCurrency } from "../../helpers";
+import InputContainer from "../Components/InputContainer";
 
 interface Props {
   data: Data;
@@ -13,125 +12,130 @@ const RentalInfo = ({ data, handleOnChange }: Props) => {
   return (
     <div style={{ marginTop: "30px" }}>
       <h2>Rental Info</h2>
-      <h3 className="pt-md-3">Income</h3>
-      <label>Total Gross Monthly Rent</label>
-      <NumberInput
-        value={data.monthlyRent}
-        onChange={handleOnChange}
-        name="monthlyRent"
-        required={true}
-      />
-      <label>Other Monthly Income</label>
-      <NumberInput
-        value={data.otherMonthlyIncome}
-        onChange={handleOnChange}
-        name="otherMonthlyIncome"
-      />
+      <Row>
+        <InputContainer
+          label="Total Gross Monthly Rent"
+          value={data.monthlyRent}
+          onChange={handleOnChange}
+          name="monthlyRent"
+          required={true}
+        />
+        <InputContainer
+          label="Other Monthly Income"
+          value={data.otherMonthlyIncome}
+          onChange={handleOnChange}
+          name="otherMonthlyIncome"
+        />
+      </Row>
 
       <h3 className="pt-md-3">Fixed Landlord-Paid Expenses</h3>
-      <label>Electricity</label>
-      <NumberInput
-        value={data.monthlyElectricyCost}
-        onChange={handleOnChange}
-        name="monthlyElectricyCost"
-      />
-      <label>{`Water & Sewer`}</label>
-      <NumberInput
-        value={data.monthlyWaterAndSewerCost}
-        onChange={handleOnChange}
-        name="monthlyWaterAndSewerCost"
-      />
-      <label>PMI</label>
-      <NumberInput
-        value={data.monthlyPmiCost}
-        onChange={handleOnChange}
-        name="monthlyPmiCost"
-      />
-      <label>Garbage</label>
-      <NumberInput
-        value={data.monthlyGarbageCost}
-        onChange={handleOnChange}
-        name="monthlyGarbageCost"
-      />
-      <label>HOAs</label>
-      <NumberInput
-        value={data.monthlyHoaCost}
-        onChange={handleOnChange}
-        name="monthlyHoaCost"
-      />
-      <label>Property Taxes</label>
-      <FormControl
-        value={
-          data.annualPropertyTaxes
-            ? toCurrency(data.annualPropertyTaxes / 12)
-            : ""
-        }
-        disabled={true}
-      />
-      <label>Other Monthly Expenses</label>
-      <NumberInput
-        value={data.otherMonthlyExpenses}
-        onChange={handleOnChange}
-        name="otherMonthlyExpenses"
-      />
-
+      <Row>
+        <InputContainer
+          label="Electricity"
+          value={data.monthlyElectricyCost}
+          onChange={handleOnChange}
+          name="monthlyElectricyCost"
+        />
+        <InputContainer
+          label={`Water & Sewer`}
+          value={data.monthlyWaterAndSewerCost}
+          onChange={handleOnChange}
+          name="monthlyWaterAndSewerCost"
+        />
+        <InputContainer
+          label="PMI"
+          value={data.monthlyPmiCost}
+          onChange={handleOnChange}
+          name="monthlyPmiCost"
+        />
+        <InputContainer
+          label="Garbage"
+          value={data.monthlyGarbageCost}
+          onChange={handleOnChange}
+          name="monthlyGarbageCost"
+        />
+        <InputContainer
+          label="HOAs"
+          value={data.monthlyHoaCost}
+          onChange={handleOnChange}
+          name="monthlyHoaCost"
+        />
+        <InputContainer
+          label="Monthly Insurance"
+          value={data.monthlyInsurance}
+          onChange={handleOnChange}
+          name="monthlyInsurance"
+        />
+        <InputContainer
+          label="Property Taxes"
+          value={
+            data.annualPropertyTaxes
+              ? Number((data.annualPropertyTaxes / 12).toFixed())
+              : 0
+          }
+          disabled={true}
+        />
+        <InputContainer
+          label="Other Monthly Expenses"
+          value={data.otherMonthlyExpenses}
+          onChange={handleOnChange}
+          name="otherMonthlyExpenses"
+        />
+      </Row>
       <h3 className="pt-md-3">Variable Landlord-Paid Expenses</h3>
-      <label>Vacancy</label>
-      <NumberInput
-        value={data.vacancyRate}
-        onChange={handleOnChange}
-        name="vacancyRate"
-      />
-
-      <label>Repairs and Maintenance</label>
-      <NumberInput
-        value={data.repairsAndMaintenanceRate}
-        onChange={handleOnChange}
-        name="repairsAndMaintenanceRate"
-      />
-
-      <label>Capital Expenditures</label>
-      <NumberInput
-        value={data.capitalExpendituresRate}
-        onChange={handleOnChange}
-        name="capitalExpendituresRate"
-      />
-
-      <label>Management Fees</label>
-      <NumberInput
-        value={data.propertyManagementRate}
-        onChange={handleOnChange}
-        name="propertyManagementRate"
-      />
-
+      <Row>
+        <InputContainer
+          label="Vacancy"
+          value={data.vacancyRate}
+          onChange={handleOnChange}
+          name="vacancyRate"
+        />
+        <InputContainer
+          label="Repairs and Maintenance"
+          value={data.repairsAndMaintenanceRate}
+          onChange={handleOnChange}
+          name="repairsAndMaintenanceRate"
+        />
+        <InputContainer
+          label="Capital Expenditures"
+          value={data.capitalExpendituresRate}
+          onChange={handleOnChange}
+          name="capitalExpendituresRate"
+        />
+        <InputContainer
+          label="Management Fees"
+          value={data.propertyManagementRate}
+          onChange={handleOnChange}
+          name="propertyManagementRate"
+        />
+      </Row>
       <h3 className="pt-md-3">Future Assumptions</h3>
-      <label>Annual Income Growth</label>
-      <NumberInput
-        value={data.annualIncomeGrowth}
-        onChange={handleOnChange}
-        name="annualIncomeGrowth"
-      />
-
-      <label>Annual Property Value Growth</label>
-      <NumberInput
-        value={data.annualPropertyValueGrowth}
-        onChange={handleOnChange}
-        name="annualPropertyValueGrowth"
-      />
-
-      <label>Annual Expenses Growth</label>
-      <NumberInput
-        value={data.annualExpensesGrowth}
-        onChange={handleOnChange}
-        name="annualExpensesGrowth"
-      />
-
-      <label>Sales Expenese</label>
-      <NumberInput
-        value={data.salesExpenses}
-        onChange={handleOnChange}
-        name="salesExpenses"
-      />
+      <Row>
+        <InputContainer
+          label="Annual Income Growth"
+          value={data.annualIncomeGrowth}
+          onChange={handleOnChange}
+          name="annualIncomeGrowth"
+        />
+        <InputContainer
+          label="Annual Property Value Growth"
+          value={data.annualPropertyValueGrowth}
+          onChange={handleOnChange}
+          name="annualPropertyValueGrowth"
+        />
+        <InputContainer
+          label="Annual Expenses Growth"
+          value={data.annualExpensesGrowth}
+          onChange={handleOnChange}
+          name="annualExpensesGrowth"
+        />
+        <InputContainer
+          label="Sales Expenese"
+          value={data.salesExpenses}
+          onChange={handleOnChange}
+          name="salesExpenses"
+        />
+      </Row>
     </div>
   );
 };
