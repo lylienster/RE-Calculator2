@@ -25,19 +25,19 @@ const InputContainer = ({
     <Col md={3}>
       <label>{label}</label>
       {type === "text" ? (
+        <FormControl
+          value={value || ""}
+          onChange={onChange}
+          name={name}
+          type="text"
+        />
+      ) : (
         <NumberInput
           value={value as number}
           onChange={onChange || (() => {})}
           name={name || ""}
           required={required}
           disabled={disabled}
-        />
-      ) : (
-        <FormControl
-          value={value || ""}
-          onChange={onChange}
-          name="address"
-          type="text"
         />
       )}
     </Col>

@@ -81,7 +81,6 @@ const BrrrrCalculator = () => {
         value === ""
           ? value
           : Number(value),
-      // isNaN(Number(value)) || value === "" ? value : Number(value),
     };
     setData(newForm);
     setSavedData(newForm);
