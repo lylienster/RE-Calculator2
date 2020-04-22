@@ -70,9 +70,9 @@ const RentalInfo = ({ data, handleOnChange }: Props) => {
       />
       <label>Other Monthly Expenses</label>
       <NumberInput
-        value={data.otherMontnlyExpenses}
+        value={data.otherMonthlyExpenses}
         onChange={handleOnChange}
-        name="otherMontnlyExpenses"
+        name="otherMonthlyExpenses"
       />
 
       <h3 className="pt-md-3">Variable Landlord-Paid Expenses</h3>

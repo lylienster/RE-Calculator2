@@ -89,43 +89,26 @@ const Report = ({ data }: Props) => {
     return `${label}: $${formatDataPointValue(value)}`;
   };
 
+  const createDataPoint = (label: string, value: number): [string, number] => {
+    return [formatDataPointLabel(label, value), formatDataPointValue(value)];
+  };
+
   const getExpenseDataPoints = () => {
     return [
       ["Expense", "Cost"],
-      [
-        formatDataPointLabel("Mortgage", calculateMonthlyMortgagePayment(data)),
-        formatDataPointValue(calculateMonthlyMortgagePayment(data)),
-      ],
-      [
-        formatDataPointLabel("Vacancy", calculateMonthlyVacancyCost(data)),
-        formatDataPointValue(calculateMonthlyVacancyCost(data)),
-      ],
-      [
-        formatDataPointLabel(
-          "Management",
-          calculateMonthlyManagementCost(data)
-        ),
-        formatDataPointValue(calculateMonthlyManagementCost(data)),
-      ],
-      [
-        formatDataPointLabel("Repairs", calculateMonthlyRepairsCost(data)),
-        formatDataPointValue(calculateMonthlyRepairsCost(data)),
-      ],
-      [
-        formatDataPointLabel(
-          "CapEx",
-          calculateMonthlyCapitalExpendituresCost(data)
-        ),
-        formatDataPointValue(calculateMonthlyCapitalExpendituresCost(data)),
-      ],
-      [
-        formatDataPointLabel("Insurance", calculateMonthlyInsuranceCost(data)),
-        formatDataPointValue(calculateMonthlyInsuranceCost(data)),
-      ],
-      [
-        formatDataPointLabel("Tax", calculateMonthlyTaxCost(data)),
-        formatDataPointValue(calculateMonthlyTaxCost(data)),
-      ],
+      createDataPoint("Mortgage", calculateMonthlyMortgagePayment(data)),
+      createDataPoint("Vacancy", calculateMonthlyVacancyCost(data)),
+      createDataPoint("Management", calculateMonthlyManagementCost(data)),
+      createDataPoint("Repairs", calculateMonthlyRepairsCost(data)),
+      createDataPoint("CapEx", calculateMonthlyCapitalExpendituresCost(data)),
+      createDataPoint("Insurance", calculateMonthlyInsuranceCost(data)),
+      createDataPoint("Tax", calculateMonthlyTaxCost(data)),
+      createDataPoint("HOA", data.monthlyHoaCost),
+      createDataPoint("Other Expenses", data.otherMonthlyExpenses),
+      createDataPoint("Electricity", data.monthlyElectricyCost),
+      createDataPoint("Water & Sewer", data.monthlyWaterAndSewerCost),
+      createDataPoint("Garbage", data.monthlyGarbageCost),
+      createDataPoint("PMI", data.monthlyPmiCost),
     ];
   };
 
@@ -179,8 +162,8 @@ const Report = ({ data }: Props) => {
   const displayKeyValuePairs2 = (fiftyPercentRule: KeyValuePair[]) => {
     return fiftyPercentRule.map((x) => (
       <Row>
-        <Col md={6}></Col>
-        <Col md={6}>
+        <Col md={5}></Col>
+        <Col md={7}>
           <Row>
             <Col xs={8}>{x.key}</Col>
             <Col xs={4} className="font-weight-bold text-right">
@@ -196,7 +179,7 @@ const Report = ({ data }: Props) => {
     return (
       <Row>
         {pairs.map((x) => (
-          <Col md={3}>
+          <Col md={3} className="pl-md-0">
             <Row className="py-md-2">
               <Col md={12} xs={8}>
                 {x.key}

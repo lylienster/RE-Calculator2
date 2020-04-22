@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Data } from "./pages/BrrrrCalculator";
 
 export const toCurrency = (number: number): string => {
-  if (Number.isNaN(number)) {
+  if (Number.isNaN(Number(number))) {
     return "";
   }
   const formattedValue = number.toLocaleString(undefined, {
@@ -307,7 +307,7 @@ export const calculateTotalMonthyOperatingExpenses = (data: Data): number => {
     monthlyWaterAndSewerCost = 0,
     monthlyGarbageCost = 0,
     monthlyHoaCost = 0,
-    otherMontnlyExpenses = 0,
+    otherMonthlyExpenses: otherMontnlyExpenses = 0,
   } = data;
 
   const totalExpenses =
@@ -376,7 +376,7 @@ export const calculateMonthlyInsuranceCost = (data: Data) => {
 export const calculateMonthlyTaxCost = (data: Data) => {
   return data.annualPropertyTaxes / 12;
 };
-// Unused
+
 export const calculateMonthlyTotalExpenses = (data: Data): number => {
   const mortgage = calculateMonthlyMortgagePayment(data);
   const operatingExpenses = calculateTotalMonthyOperatingExpenses(data);

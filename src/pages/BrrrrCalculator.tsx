@@ -48,7 +48,7 @@ export interface Data {
   monthlyGarbageCost: number;
   monthlyHoaCost: number;
   monthlyInsurance: number;
-  otherMontnlyExpenses: number;
+  otherMonthlyExpenses: number;
 
   //variableExpenses
   vacancyRate: number;
