@@ -6,6 +6,7 @@ import RentalInfo from "./Partials/RentalInfo";
 import AnalysisOverTime from "./Partials/Results";
 import { useLocalStorage } from "../helpers";
 import Report from "./Partials/Report";
+import LoanBalanceValueEquity from "./Partials/LoanBalanceValueEquity";
 
 export interface Data {
   //propertyInfo
@@ -94,7 +95,7 @@ const BrrrrCalculator = () => {
       <RentalInfo data={data} handleOnChange={handleOnChange} />
       <Report data={data} />
       <AnalysisOverTime data={data} />
-
+      <LoanBalanceValueEquity data={data} />
       <div style={{ wordBreak: "break-word" }}>{JSON.stringify(data)}</div>
     </Container>
   );

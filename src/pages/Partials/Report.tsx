@@ -92,6 +92,22 @@ const Report = ({ data }: Props) => {
   const createDataPoint = (label: string, value: number): [string, number] => {
     return [formatDataPointLabel(label, value), formatDataPointValue(value)];
   };
+  const createKeyValuePair = (
+    key: string,
+    value: number,
+    isPercent?: boolean
+  ): KeyValuePair => {
+    if (isPercent) {
+      return {
+        key: key,
+        value: `${value}%`,
+      };
+    }
+    return {
+      key: key,
+      value: `$${toCurrency(value)}`,
+    };
+  };
 
   const getExpenseDataPoints = () => {
     return [
@@ -112,41 +128,33 @@ const Report = ({ data }: Props) => {
     ];
   };
 
-  const fiftyPercentRule = [
-    {
-      key: "Total Monthly Income",
-      value: `$${toCurrency(calculateMonthlyTotalIncome(data))}`,
-    },
-    {
-      key: "x50% for Expenses",
-      value: `$${toCurrency(calculateMonthlyTotalIncome(data) / 2)}`,
-    },
-    {
-      key: "Mortgage Payment",
-      value: `$${toCurrency(calculateMonthlyMortgagePayment(data))}`,
-    },
-    {
-      key: "Monthly Cashflow using 50% Rule",
-      value: `$${toCurrency(
-        calculateMonthlyTotalIncome(data) / 2 -
-          calculateMonthlyMortgagePayment(data)
-      )}`,
-    },
-  ];
-
   const getIncomeDataPoints = () => {
     return [
       ["Income", "Value"],
-      [
-        formatDataPointLabel("Rent", data.monthlyRent),
-        formatDataPointValue(data.monthlyRent),
-      ],
-      [
-        formatDataPointLabel("Other", data.otherMonthlyIncome),
-        formatDataPointValue(data.otherMonthlyIncome),
-      ],
+      createDataPoint("Rent", data.monthlyRent),
+      createDataPoint("Other", data.otherMonthlyIncome),
     ];
   };
+
+  const fiftyPercentRule = [
+    createKeyValuePair(
+      "Total Monthly Income",
+      calculateMonthlyTotalIncome(data)
+    ),
+    createKeyValuePair(
+      "x50% for Expenses",
+      calculateMonthlyTotalIncome(data) / 2
+    ),
+    createKeyValuePair(
+      "Mortgage Payment",
+      calculateMonthlyMortgagePayment(data)
+    ),
+    createKeyValuePair(
+      "Monthly Cashflow using 50% Rule",
+      calculateMonthlyTotalIncome(data) / 2 -
+        calculateMonthlyMortgagePayment(data)
+    ),
+  ];
 
   const displayKeyValuePairs = (pairs: KeyValuePair[]) => {
     return pairs.map((x) => (
@@ -196,21 +204,18 @@ const Report = ({ data }: Props) => {
   };
 
   const getExpenseTabKeyValuePairs = [
-    {
-      key: "Total Operating Expeneses",
-      value: `$${toCurrency(calculateTotalMonthyOperatingExpenses(data))}`,
-    },
-    {
-      key: "Mortgage Expeneses",
-      value: `$${toCurrency(calculateMonthlyMortgagePayment(data))}`,
-    },
+    createKeyValuePair(
+      "Total Operating Expeneses",
+      calculateTotalMonthyOperatingExpenses(data)
+    ),
+    createKeyValuePair(
+      "Mortgage Expeneses",
+      calculateMonthlyMortgagePayment(data)
+    ),
   ] as KeyValuePair[];
 
   const getIncomeTabKeyValuePairs = [
-    {
-      key: "Monthly Income",
-      value: `$${toCurrency(calculateMonthlyTotalIncome(data))}`,
-    },
+    createKeyValuePair("Monthly Income", calculateMonthlyTotalIncome(data)),
   ] as KeyValuePair[];
 
   return (
