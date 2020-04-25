@@ -93,6 +93,7 @@ const BuyAndHoldCalculator = () => {
       <PropertyInfo data={data} handleOnChange={handleOnChange} />
       <PurchaseInfo data={data} handleOnChange={handleOnChange} />
       <RentalInfo data={data} handleOnChange={handleOnChange} />
+      <hr className="solid" />
       <Report data={data} />
       <AnalysisOverTime data={data} />
       <LoanBalanceValueEquity data={data} />
