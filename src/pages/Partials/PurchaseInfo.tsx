@@ -1,5 +1,5 @@
 import React from "react";
-import { Data } from "../BrrrrCalculator";
+import { Data } from "../BuyAndHoldCalculator";
 import InputContainer from "../Components/InputContainer";
 import { Row } from "react-bootstrap";
 

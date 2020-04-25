@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Data } from "../BrrrrCalculator";
+import { Data } from "../BuyAndHoldCalculator";
 import { Container, Row, Col, Tabs, Tab } from "react-bootstrap";
 import Chart from "react-google-charts";
 

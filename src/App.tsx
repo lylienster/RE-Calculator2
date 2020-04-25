@@ -1,13 +1,16 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import BrrrrCalculator from "./pages/BrrrrCalculator";
+import BuyAndHoldCalculator from "./pages/BuyAndHoldCalculator";
 
 export default function App() {
   return (
     <Switch>
       <Route exact path="/re-calculator2" component={HomePage} />
-      <Route path="/brrrr-calculator" component={BrrrrCalculator} />
+      <Route
+        path="/re-calculator2/buy-and-hold"
+        component={BuyAndHoldCalculator}
+      />
     </Switch>
   );
 }

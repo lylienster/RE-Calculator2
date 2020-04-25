@@ -1,6 +1,6 @@
 import { FormData } from "./Calculator";
 import { useState } from "react";
-import { Data } from "./pages/BrrrrCalculator";
+import { Data } from "./pages/BuyAndHoldCalculator";
 
 export const toCurrency = (number: number): string => {
   if (Number.isNaN(Number(number))) {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import { Data } from "../BrrrrCalculator";
+import { Data } from "../BuyAndHoldCalculator";
 import {
   calculateProjectedTotalAnnualIncome,
   toCurrency,

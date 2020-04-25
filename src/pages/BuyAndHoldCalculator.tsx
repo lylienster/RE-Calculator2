@@ -68,7 +68,7 @@ export interface Data {
   projectionYear: number;
 }
 
-const BrrrrCalculator = () => {
+const BuyAndHoldCalculator = () => {
   const [savedData, setSavedData] = useLocalStorage("userInput", {} as Data);
   const [data, setData] = useState(savedData);
 
@@ -101,4 +101,4 @@ const BrrrrCalculator = () => {
   );
 };
 
-export default BrrrrCalculator;
+export default BuyAndHoldCalculator;

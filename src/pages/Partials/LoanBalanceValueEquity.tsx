@@ -1,5 +1,5 @@
 import React from "react";
-import { Data } from "../BrrrrCalculator";
+import { Data } from "../BuyAndHoldCalculator";
 import "./Results.css";
 import Chart from "react-google-charts";
 import {

@@ -113,7 +113,7 @@ const Calculator = () => {
 
   return (
     <div className="App">
-      <Link to="/brrrr-calculator">BRRRR Calculator</Link>
+      <Link to="/re-calculator2/buy-and-hold">BRRRR Calculator</Link>
       <div className="container">
         <h1 className="text-center">RE Calculator</h1>
 
