@@ -10,10 +10,20 @@ interface Props {
 
 const PropertyInfo = ({ data, handleOnChange }: Props) => {
   return (
-    <div style={{ marginTop: "30px" }}>
+    <div>
       <div className="mx-auto" style={{ width: "auto" }}>
         <h2 className="py-md-2">Property Info</h2>
       </div>
+      <Row>
+        <InputContainer
+          label="Report Title"
+          value={data.reportTitle}
+          onChange={handleOnChange}
+          name="reportTitle"
+          type="text"
+          required={true}
+        />
+      </Row>
       <Row>
         <InputContainer
           label="Property Address"

@@ -17,12 +17,19 @@ const NumberInput = ({
   disabled,
 }: Props) => {
   return (
+    // <input
+    //   name="purchasePrice"
+    //   type="number"
+    //   className="form-control is-invalid"
+    //   value={Number.isNaN(value) ? "" : value}
+    //   onChange={onChange}
+    // />
     <FormControl
-      value={Number.isNaN(value) ? "" : value}
+      // value={Number.isNaN(value) ? "" : value}
+      value={value || ""}
       type="number"
       onChange={onChange}
       name={name}
-      //isValid={required && value ? true : false}
       isInvalid={
         required && (value === undefined || isNaN(parseInt(value.toString())))
           ? true

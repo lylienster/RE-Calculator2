@@ -1,10 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Data } from "../BuyAndHoldCalculator";
 import "./Results.css";
 import Chart from "react-google-charts";
 import {
-  calculateProjectionLoanPayoff,
-  calculateProjectionSalePrice,
   calculateProjectedPropertyValue,
   calculateProjectedLoanBalance,
   calculateProjectedEquity,
@@ -129,9 +127,13 @@ const LoanBalanceValueEquity = ({ data }: Props) => {
     <div style={{ marginTop: "30px" }}>
       <Row>
         <Col md={6}>
-          {displayChart(
-            incomeExpenseCashflowDataPoints,
-            "Income, Expense and Cashflow"
+          {useMemo(
+            () =>
+              displayChart(
+                incomeExpenseCashflowDataPoints,
+                "Income, Expense and Cashflow"
+              ),
+            [incomeExpenseCashflowDataPoints]
           )}
         </Col>
         <Col md={6}>

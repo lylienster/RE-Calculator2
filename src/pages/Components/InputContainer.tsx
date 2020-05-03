@@ -30,6 +30,7 @@ const InputContainer = ({
           onChange={onChange}
           name={name}
           type="text"
+          isInvalid={required && !value ? true : false}
         />
       ) : (
         <NumberInput

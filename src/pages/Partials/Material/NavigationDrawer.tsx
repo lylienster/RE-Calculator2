@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   list: {
@@ -39,11 +40,15 @@ const NavigationDrawer = ({ drawerOpen, setDrawerOpen }: Props) => {
             onKeyDown={toggleDrawer(false)}
           >
             <List>
-              {["Buy & Hold", "BRRRR"].map((text) => (
-                <ListItem button key={text}>
-                  <ListItemText primary={text} />
-                </ListItem>
-              ))}
+              <ListItem button>
+                {/* <ListItemText primary={`Buy & Hold`} /> */}
+                <Link
+                  to="/buy-and-hold"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >{`Buy & Hold`}</Link>
+                {/* </ListItemText> */}
+                <Button></Button>
+              </ListItem>
             </List>
           </div>
         </Drawer>

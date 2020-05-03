@@ -1,0 +1,6 @@
+Roadmap
+
+- Save multiple analysis
+- Estimate rehab cost based on square footage of the house and how much work is needed
+- Optimization for faster input
+- 

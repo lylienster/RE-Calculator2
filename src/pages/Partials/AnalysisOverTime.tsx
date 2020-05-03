@@ -22,6 +22,7 @@ interface Props {
 }
 
 interface ProjectedData {
+  projectionYear: number;
   totalIncome: string;
   totalExpenses: string;
   operatingExpenses: string;
@@ -31,7 +32,6 @@ interface ProjectedData {
   cashOnCashROI: string;
   loanBalance: string;
   equity: string;
-  projectionYear: number;
   totalProfitIfSold: string;
   annualizedTotalReturn: string;
 }
@@ -164,4 +164,4 @@ const AnalysisOverTime = ({ data }: Props) => {
   );
 };
 
-export default AnalysisOverTime;
+export default React.memo(AnalysisOverTime);
