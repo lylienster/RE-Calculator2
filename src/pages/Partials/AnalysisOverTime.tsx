@@ -1,27 +1,14 @@
 import React from "react";
 import { Table } from "react-bootstrap";
 import { Data } from "../BuyAndHoldCalculator";
-import {
-  calculateProjectedTotalAnnualIncome,
-  toCurrency,
-  calculateProjectedTotalAnnualExpenses,
-  calculateProjectedAnnualOperatingExpenses,
-  calculateMonthlyMortgagePayment,
-  calculateProjectedTotalAnnualCashflow,
-  calculateProjectedCashOnCashROI,
-  calculateProjectedLoanBalance,
-  calculateProjectedTotalProfitIfSold,
-  calculateProjectedEquity,
-  calculateProjectedPropertyValue,
-  calculateProjectedAnnualizedTotalReturn,
-} from "../../helpers";
 import "./Results.css";
+import { calculateAnalysisOverTime } from "./calculateAnalysisOverTime";
 
 interface Props {
   data: Data;
 }
 
-interface ProjectedData {
+export interface ProjectedData {
   projectionYear: number;
   totalIncome: string;
   totalExpenses: string;
@@ -36,43 +23,28 @@ interface ProjectedData {
   annualizedTotalReturn: string;
 }
 
+// interface ProjectedData2 {
+//   projectionYear: number[];
+//   totalIncome: string[];
+//   totalExpenses: string[];
+//   operatingExpenses: string[];
+//   propertyValue: string[];
+//   mortgagePayment: string[];
+//   totalCashflow: string[];
+//   cashOnCashROI: string[];
+//   loanBalance: string[];
+//   equity: string[];
+//   totalProfitIfSold: string[];
+//   annualizedTotalReturn: string[];
+// }
+
 const AnalysisOverTime = ({ data }: Props) => {
-  const projectionYears = [1, 2, 5, 10, 15, 20, 30];
-  const projectedNumbersByYear = projectionYears.map((year) => {
-    const projectedYear = year - 1;
-    return {
-      projectionYear: year,
-      totalIncome: `$${toCurrency(
-        calculateProjectedTotalAnnualIncome(data, projectedYear)
-      )}`,
-      totalExpenses: `$${toCurrency(
-        calculateProjectedTotalAnnualExpenses(data, projectedYear)
-      )}`,
-      operatingExpenses: `$${toCurrency(
-        calculateProjectedAnnualOperatingExpenses(data, projectedYear)
-      )}`,
-      mortgagePayment: `$${toCurrency(
-        calculateMonthlyMortgagePayment(data) * 12
-      )}`,
-      totalCashflow: `$${toCurrency(
-        calculateProjectedTotalAnnualCashflow(data, projectedYear)
-      )}`,
-      cashOnCashROI: `${toCurrency(
-        calculateProjectedCashOnCashROI(data, projectedYear)
-      )}%`,
-      propertyValue: `$${toCurrency(
-        calculateProjectedPropertyValue(data, year)
-      )}`,
-      equity: `$${toCurrency(calculateProjectedEquity(data, year))}`,
-      loanBalance: `$${toCurrency(calculateProjectedLoanBalance(data, year))}`,
-      totalProfitIfSold: `$${toCurrency(
-        calculateProjectedTotalProfitIfSold(data, year)
-      )}`,
-      annualizedTotalReturn: `${toCurrency(
-        calculateProjectedAnnualizedTotalReturn(data, year)
-      )}%`,
-    } as ProjectedData;
-  });
+  const projectedNumbersByYear = calculateAnalysisOverTime(data);
+
+  // const test = {
+  //   projectionYear: [1, 2, 3],
+  //   totalIncome: ["1", "2", "3"],
+  // } as ProjectedData2;
 
   return (
     <div style={{ marginTop: "30px" }}>
@@ -86,12 +58,25 @@ const AnalysisOverTime = ({ data }: Props) => {
         <thead>
           <tr>
             <th></th>
-            {projectionYears.map((year) => {
-              return <th>{`Year ${year}`}</th>;
+            {projectedNumbersByYear.map((numbers) => {
+              return <th>{`Year ${numbers.projectionYear}`}</th>;
             })}
           </tr>
         </thead>
         <tbody>
+          {/* <tr>
+            <td>Total Annual Income</td>
+            {test.projectionYear.map((temp) => {
+              return <td>{temp}</td>;
+            })}
+          </tr>
+          <tr>
+            <td>Total Annual Income</td>
+            {test.totalIncome.map((temp) => {
+              return <td>{temp}</td>;
+            })}
+          </tr> */}
+
           <tr>
             <td>Total Annual Income</td>
             {projectedNumbersByYear.map((numbers) => {
@@ -164,4 +149,4 @@ const AnalysisOverTime = ({ data }: Props) => {
   );
 };
 
-export default React.memo(AnalysisOverTime);
+export default AnalysisOverTime;

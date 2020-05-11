@@ -4,13 +4,11 @@ import { Guid } from "guid-typescript";
 import PropertyInfo from "./Partials/PropertyInfo";
 import PurchaseInfo from "./Partials/PurchaseInfo";
 import RentalInfo from "./Partials/RentalInfo";
-import AnalysisOverTime from "./Partials/AnalysisOverTime";
 import { useLocalStorage } from "../helpers";
-import Report from "./Partials/Report";
-import LoanBalanceValueEquity from "./Partials/LoanBalanceValueEquity";
 import flow from "lodash/fp/flow";
 import map from "lodash/fp/map";
-import orderBy from "lodash/fp/orderBy";
+// import Report from "./Partials/Report";
+const Report = React.lazy(() => import("./Partials/Report"));
 
 export interface Data {
   reportId: string;
@@ -110,20 +108,24 @@ const BuyAndHoldCalculator = () => {
           : Number(value),
     };
     setData(newForm);
+    // var t0 = performance.now();
 
     if (newForm.reportId) {
       const selectedReportIndex = reports.findIndex(
         (x: Data) => x.reportId === data.reportId
       );
       if (selectedReportIndex !== -1) {
-        setReports([
-          ...reports.slice(0, selectedReportIndex),
-          newForm,
-          ...reports.slice(selectedReportIndex + 1),
-        ]);
+        // setReports([
+        //   ...reports.slice(0, selectedReportIndex),
+        //   newForm,
+        //   ...reports.slice(selectedReportIndex + 1),
+        // ]);
       }
     }
-    // setSavedData(newForm);
+
+    // var t1 = performance.now();
+
+    // console.log("Saving to reports took " + (t1 - t0) + " milliseconds.");
   };
 
   // const handleOnRender = (
@@ -183,7 +185,6 @@ const BuyAndHoldCalculator = () => {
     setKey(key);
     setSelectedReportId(reports[index].reportId);
     setData({ ...selectedReport });
-    // setSavedData({ ...selectedReport });
   };
 
   const handleSaveClick = (
@@ -205,7 +206,6 @@ const BuyAndHoldCalculator = () => {
 
     data.reportId = Guid.create().toString();
     data.dateCreated = new Date().toISOString();
-    // setSavedData(data);
     setReports([...reports, data]);
     setKey(data.reportId);
     setData(data);
@@ -238,26 +238,6 @@ const BuyAndHoldCalculator = () => {
             Test
           </Tab>
         )}
-
-        {/* <Tab eventKey="expenses" title={data.reportTitle}>
-          <div className="float-right py-2">
-            <Button style={{ width: "100px" }} onClick={handleSaveClick}>
-              Save
-            </Button>
-          </div>
-          <div className="clearfix"></div>
-          <PropertyInfo data={data} handleOnChange={handleOnChange} />
-          <PurchaseInfo data={data} handleOnChange={handleOnChange} />
-          <RentalInfo data={data} handleOnChange={handleOnChange} />
-          <hr className="solid" />
-          <Report data={data} />
-          <AnalysisOverTime data={data} />
-          <LoanBalanceValueEquity data={data} />
-          <div style={{ wordBreak: "break-word" }}>{JSON.stringify(data)}</div>
-        </Tab>
-        <Tab eventKey="income" title="Expenses">
-          Test
-        </Tab>*/}
       </Tabs>
       {!data.reportId && (
         <div className="float-right py-2">
@@ -269,9 +249,9 @@ const BuyAndHoldCalculator = () => {
       <PurchaseInfo data={data} handleOnChange={handleOnChange} />
       <RentalInfo data={data} handleOnChange={handleOnChange} />
       <hr className="solid" />
-      <Report data={data} />
-      <AnalysisOverTime data={data} />
-      <LoanBalanceValueEquity data={data} />
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <Report data={data} />
+      </React.Suspense>
       <div style={{ wordBreak: "break-word" }}>{JSON.stringify(data)}</div>
     </Container>
     // </Profiler>
