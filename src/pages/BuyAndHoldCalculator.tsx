@@ -86,12 +86,20 @@ const BuyAndHoldCalculator = () => {
     "selectedReportId",
     ""
   );
-  let selectedReport = reports?.filter(
-    (x: Data) => x.reportId === selectedReportId
-  )[0] as Data;
 
-  if (!selectedReport && reports.length > 0) {
-    selectedReport = reports[0];
+  const selectedReportIndex = reports.findIndex(
+    (x: Data) => x.reportId === selectedReportId
+  );
+
+  let selectedReport = {} as Data;
+
+  if (selectedReportIndex !== -1) {
+    selectedReport = reports[selectedReportIndex];
+  } else {
+    if (reports.length > 0) {
+      selectedReport = reports[0];
+      setSelectedReportId(selectedReport.reportId);
+    }
   }
 
   const [data, setData] = useState(selectedReport || ({} as Data));
@@ -150,10 +158,10 @@ const BuyAndHoldCalculator = () => {
   )(reports) as KeyValuePair[];
 
   if (!tabTitles || tabTitles.length === 0 || !data.reportId) {
-    (tabTitles || []).push({ value: "New" } as KeyValuePair);
+    (tabTitles || []).push({ value: "New", key: "addReport" } as KeyValuePair);
   }
 
-  const [key, setKey] = useState(selectedReportId);
+  const [key, setKey] = useState(selectedReport.reportId || "addReport");
 
   const handleOnSelect = (
     key: string,
@@ -166,8 +174,7 @@ const BuyAndHoldCalculator = () => {
     if (key === "addReport") {
       event.preventDefault();
       setData({} as Data);
-      // setSavedData({});
-      setKey(undefined);
+      setKey("addReport");
       return;
     }
     const previousIndex = reports.findIndex(
@@ -187,29 +194,57 @@ const BuyAndHoldCalculator = () => {
     setData({ ...selectedReport });
   };
 
-  const handleSaveClick = (
+  const handleCreateNewReportClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): void => {
-    let index = -1;
-    if (data.reportId) {
-      index = reports.findIndex((x: Data) => x.reportId === data.reportId);
-    }
+    // let index = -1;
+    // if (data.reportId) {
+    //   index = reports.findIndex((x: Data) => x.reportId === data.reportId);
+    // }
 
-    if (index !== -1) {
-      setReports([
-        ...reports.slice(0, index),
-        data,
-        ...reports.slice(index + 1),
-      ]);
-      return;
-    }
+    // if (index !== -1) {
+    //   setReports([
+    //     ...reports.slice(0, index),
+    //     data,
+    //     ...reports.slice(index + 1),
+    //   ]);
+    //   return;
+    // }
 
     data.reportId = Guid.create().toString();
     data.dateCreated = new Date().toISOString();
     setReports([...reports, data]);
     setKey(data.reportId);
+    setSelectedReportId(data.reportId);
     setData(data);
   };
+
+  const handleRemoveButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void => {
+    if (reports.length === 1) {
+      setReports([]);
+      setSelectedReportId("");
+      setKey("addReport");
+      setData({} as Data);
+    } else if (reports.length > 1) {
+      let index = -1;
+      if (data.reportId) {
+        index = reports.findIndex((x: Data) => x.reportId === data.reportId);
+      }
+
+      if (index !== -1) {
+        setReports([...reports.slice(0, index), ...reports.slice(index + 1)]);
+      }
+
+      var newData =
+        reports.filter((x: Data) => x.reportId !== data.reportId)[0] || {};
+      setSelectedReportId(newData.reportId);
+      setKey(newData.reportId);
+      setData(newData);
+    }
+  };
+
   return (
     // <Profiler id="Container" onRender={handleOnRender}>
     <Container>
@@ -241,7 +276,16 @@ const BuyAndHoldCalculator = () => {
       </Tabs>
       {!data.reportId && (
         <div className="float-right py-2">
-          <Button onClick={handleSaveClick}>Create New Report</Button>
+          <Button onClick={handleCreateNewReportClick}>
+            Create New Report
+          </Button>
+        </div>
+      )}
+      {data.reportId && (
+        <div className="float-right py-2">
+          <Button onClick={handleRemoveButtonClick} variant="danger">
+            Remove Report
+          </Button>
         </div>
       )}
       <div className="clearfix"></div>
