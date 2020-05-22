@@ -123,11 +123,11 @@ const BuyAndHoldCalculator = () => {
         (x: Data) => x.reportId === data.reportId
       );
       if (selectedReportIndex !== -1) {
-        // setReports([
-        //   ...reports.slice(0, selectedReportIndex),
-        //   newForm,
-        //   ...reports.slice(selectedReportIndex + 1),
-        // ]);
+        setReports([
+          ...reports.slice(0, selectedReportIndex),
+          newForm,
+          ...reports.slice(selectedReportIndex + 1),
+        ]);
       }
     }
 
