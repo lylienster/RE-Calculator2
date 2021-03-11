@@ -1,4 +1,5 @@
 import React from "react";
+import NumberFormat from "react-number-format";
 import { Col, FormControl } from "react-bootstrap";
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
   required?: boolean;
   disabled?: boolean;
   type?: string;
+  prefix?: string;
 }
 
 const InputContainer = ({
@@ -19,16 +21,28 @@ const InputContainer = ({
   //   disabled,
   type,
   register,
+  prefix,
 }: Props) => {
   return (
     <Col md={3}>
       <label>{label}</label>
-      <FormControl
-        type={type}
-        name={name}
-        ref={register}
-        defaultValue={value}
-      />
+      {type === "number" ? (
+        <NumberFormat
+          className="form-control"
+          isNumericString={true}
+          thousandSeparator={true}
+          prefix={prefix}
+          defaultValue={value}
+          ref={register}
+        />
+      ) : (
+        <FormControl
+          type={type}
+          name={name}
+          ref={register}
+          defaultValue={value}
+        />
+      )}
     </Col>
   );
 };

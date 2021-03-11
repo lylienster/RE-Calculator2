@@ -1,50 +1,66 @@
 import React from "react";
 import { Row, Col, FormControl } from "react-bootstrap";
+import InputContainer from "./InputContainer";
+import RentalPropertyInfo from "./RentalPropertyInfo";
 
 interface Props {
   register: any;
+  data: RentalPropertyInfo;
 }
-const PurchaseInfo = ({ register }: Props) => {
+const PurchaseInfo = ({ register, data }: Props) => {
   return (
     <div style={{ marginTop: "30px" }}>
       <h2>Purchase Info</h2>
       <Row>
-        <Col md={3}>
-          <label>Purchase Price</label>
-          <FormControl type="number" name="purchasePrice" ref={register} />
-        </Col>
-        <Col md={3}>
-          <label>After Repair Value</label>
-          <FormControl type="number" name="afterRepairPrice" ref={register} />
-        </Col>
-        <Col md={3}>
-          <label>Purchase Closing Cost</label>
-          <FormControl
-            type="number"
-            name="purchaseClosingCost"
-            ref={register}
-          />
-        </Col>
-        <Col md={3}>
-          <label>Estimated Repair Cost</label>
-          <FormControl type="number" name="estimateRepairCost" ref={register} />
-        </Col>
-        <Col md={3}>
-          <label>Down Payment Percentage of Purchase Price</label>
-          <FormControl
-            type="number"
-            name="downPaymentPercentage"
-            ref={register}
-          />
-        </Col>
-        <Col md={3}>
-          <label>Loan Interest Rate</label>
-          <FormControl type="number" name="loanInterestRate" ref={register} />
-        </Col>
-        <Col md={3}>
-          <label>Amortized Over How Many Years</label>
-          <FormControl type="number" name="loanPeriod" ref={register} />
-        </Col>
+        <InputContainer
+          register={register}
+          label="Purchase Price"
+          name="purchasePrice"
+          value={data.purchasePrice}
+          type="number"
+        />
+        <InputContainer
+          register={register}
+          label="After Repair Value"
+          name="afterRepairPrice"
+          value={data.afterRepairPrice}
+          type="number"
+        />
+        <InputContainer
+          register={register}
+          label="Purchase Closing Cost"
+          name="purchaseClosingCost"
+          value={data.purchaseClosingCost}
+          type="number"
+        />
+        <InputContainer
+          register={register}
+          label="Estimated Repair Cost"
+          name="estimateRepairCost"
+          value={data.estimateRepairCost}
+          type="number"
+        />
+        <InputContainer
+          register={register}
+          label="Down Payment Percentage of Purchase Price"
+          name="downPaymentPercentage"
+          value={data.downPaymentPercentage}
+          type="number"
+        />
+        <InputContainer
+          register={register}
+          label="Loan Interest Rate"
+          name="loanInterestRate"
+          value={data.loanInterestRate}
+          type="number"
+        />
+        <InputContainer
+          register={register}
+          label="Amortized Over How Many Years"
+          name="loanPeriod"
+          value={data.loanPeriod}
+          type="number"
+        />
       </Row>
     </div>
   );

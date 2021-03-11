@@ -1,12 +1,14 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
 import InputContainer from "./InputContainer";
+import RentalPropertyInfo from "./RentalPropertyInfo";
 
 interface Props {
   register: any;
+  data: RentalPropertyInfo;
 }
 
-const RentalInfo = ({ register }: Props) => {
+const RentalInfo = ({ register, data }: Props) => {
   return (
     <div style={{ marginTop: "30px" }}>
       <h2>Rental Info</h2>
@@ -15,12 +17,14 @@ const RentalInfo = ({ register }: Props) => {
           register={register}
           label="Total Gross Monthly Rent"
           name="monthlyRent"
+          value={data.monthlyRent}
           type="number"
         />
         <InputContainer
           register={register}
           label="Other Monthly Income"
           name="otherMonthlyIncome"
+          value={data.otherMonthlyIncome}
           type="number"
         />
         <Col md={3}>
@@ -47,48 +51,56 @@ const RentalInfo = ({ register }: Props) => {
           register={register}
           label="Electricity"
           name="monthlyElectricyCost"
+          value={data.monthlyElectricyCost}
           type="number"
         />
         <InputContainer
           register={register}
           label="Water & Sewer"
           name="monthlyWaterAndSewerCost"
+          value={data.monthlyWaterAndSewerCost}
           type="number"
         />
         <InputContainer
           register={register}
           label="PMI"
           name="monthlyPmiCost"
+          value={data.monthlyPmiCost}
           type="number"
         />
         <InputContainer
           register={register}
           label="Garbage"
           name="monthlyGarbageCost"
+          value={data.monthlyGarbageCost}
           type="number"
         />
         <InputContainer
           register={register}
           label="HOAs"
           name="monthlyHoaCost"
+          value={data.monthlyHoaCost}
           type="number"
         />
         <InputContainer
           register={register}
           label="Monthly Insurance"
           name="monthlyInsurance"
+          value={data.monthlyInsurance}
           type="number"
         />
         <InputContainer
           register={register}
           label="Property Taxes"
           name="annualPropertyTaxes"
+          value={data.annualPropertyTaxes}
           type="number"
         />
         <InputContainer
           register={register}
           label="Other Monthly Expenses"
           name="otherMonthlyExpenses"
+          value={data.otherMonthlyExpenses}
           type="number"
         />
       </Row>
@@ -98,24 +110,28 @@ const RentalInfo = ({ register }: Props) => {
           register={register}
           label="Vacancy"
           name="vacancyRate"
+          value={data.vacancyRate}
           type="number"
         />
         <InputContainer
           register={register}
           label="Repairs and Maintenance"
           name="repairsAndMaintenanceRate"
+          value={data.repairsAndMaintenanceRate}
           type="number"
         />
         <InputContainer
           register={register}
           label="Capital Expenditures"
           name="capitalExpendituresRate"
+          value={data.capitalExpendituresRate}
           type="number"
         />
         <InputContainer
           register={register}
           label="Management Fees"
           name="propertyManagementRate"
+          value={data.propertyManagementRate}
           type="number"
         />
       </Row>
@@ -125,24 +141,28 @@ const RentalInfo = ({ register }: Props) => {
           register={register}
           label="Annual Income Growth"
           name="annualIncomeGrowth"
+          value={data.annualIncomeGrowth}
           type="number"
         />
         <InputContainer
           register={register}
           label="Annual Property Value Growth"
           name="annualPropertyValueGrowth"
+          value={data.annualPropertyValueGrowth}
           type="number"
         />
         <InputContainer
           register={register}
           label="Annual Expenses Growth"
           name="annualExpensesGrowth"
+          value={data.annualExpensesGrowth}
           type="number"
         />
         <InputContainer
           register={register}
           label="Sales Expenese"
           name="salesExpenses"
+          value={data.salesExpenses}
           type="number"
         />
       </Row>
